@@ -6,9 +6,10 @@
 ![Backend](https://img.shields.io/badge/Backend-Node.js%2020+-339933)
 ![Database](https://img.shields.io/badge/Database-PostgreSQL%20+%20MongoDB-336791)
 ![Container](https://img.shields.io/badge/Container-Docker-2496ed)
-![Cloud](https://img.shields.io/badge/Cloud-AWS%20Ready-ff9900)
+![Cloud](https://img.shields.io/badge/Cloud-AWS%20+%20Kubernetes-ff9900)
+![Infrastructure](https://img.shields.io/badge/IaC-Terraform-623ce4)
 
-**A modern, scalable user management system with comprehensive authentication and infrastructure automation**
+**A production-ready user management system with enterprise-grade authentication, multi-database architecture, and complete AWS infrastructure automation**
 
 </div>
 
@@ -17,80 +18,222 @@
 ## 📋 Table of Contents
 
 1. [🏗️ System Architecture](#%EF%B8%8F-system-architecture)
-2. [🔧 Technology Stack](#-technology-stack)
-3. [🌟 Key Features](#-key-features)
-4. [🚀 Quick Start](#-quick-start)
-5. [🗄️ Database Setup](#%EF%B8%8F-database-setup)
-6. [☁️ Deployment](#%EF%B8%8F-deployment)
+2. [📁 Project Structure](#-project-structure)
+3. [🔧 Technology Stack](#-technology-stack)
+4. [🌟 Key Features](#-key-features)
+5. [🚀 Quick Start](#-quick-start)
+6. [🗄️ Database Architecture](#%EF%B8%8F-database-architecture)
+7. [☁️ AWS Infrastructure](#%EF%B8%8F-aws-infrastructure)
+8. [⚡ Kubernetes Deployment](#-kubernetes-deployment)
+9. [🧪 Testing Strategy](#-testing-strategy)
 
 ---
 
 ## 🏗️ System Architecture
 
-### Current Implementation
+### Production Architecture
 
 ```mermaid
 graph TB
-    subgraph "🎨 Frontend"
-        REACT[React 19 + TypeScript]
-        VITE[Vite + TailwindCSS]
+    subgraph "🌐 AWS Cloud Infrastructure"
+        subgraph "🔒 VPC (10.2.0.0/16)"
+            subgraph "📡 Public Subnets"
+                ALB[Application Load Balancer]
+                NAT[NAT Gateway]
+            end
+            
+            subgraph "🔐 Private Subnets"
+                ECS[ECS Fargate Cluster]
+                FE[Frontend Tasks]
+                BE[Backend Tasks]
+            end
+            
+            subgraph "🗄️ Database Subnets"
+                RDS[(RDS PostgreSQL<br/>Multi-AZ)]
+                DOC[(DocumentDB<br/>MongoDB Compatible)]
+            end
+        end
+        
+        subgraph "🔧 Supporting Services"
+            ECR[Container Registry]
+            SECRETS[Secrets Manager]
+            CW[CloudWatch]
+        end
     end
 
-    subgraph "🔧 Backend"
-        EXPRESS[Express.js + TypeScript]
-        AUTH[JWT Authentication]
-        API[REST API + Swagger]
+    subgraph "☸️ Kubernetes Alternative"
+        K8S_NS[user-management namespace]
+        K8S_PODS[Frontend & Backend Pods]
+        K8S_PVC[Persistent Volume Claims]
     end
 
-    subgraph "🗄️ Databases"
-        PG[(PostgreSQL<br/>Users & Auth)]
-        MONGO[(MongoDB<br/>User Profiles)]
+    ALB --> FE
+    ALB --> BE
+    BE --> RDS
+    BE --> DOC
+    ECR --> ECS
+    SECRETS --> BE
+    CW --> ECS
+```
+
+### Local Development Architecture
+
+```mermaid
+graph TB
+    subgraph "🐳 Docker Compose Stack"
+        FE_DEV[Frontend Dev Server<br/>Vite + Hot Reload]
+        BE_DEV[Backend Dev Server<br/>Nodemon + TypeScript]
+        PG_DEV[(PostgreSQL 15<br/>Development DB)]
+        MONGO_DEV[(MongoDB 7<br/>Development DB)]
     end
 
-    subgraph "🐳 Infrastructure"
-        DOCKER[Docker Compose]
-        AWS[AWS Ready]
-        K8S[Kubernetes Ready]
-    end
+    FE_DEV --> BE_DEV
+    BE_DEV --> PG_DEV
+    BE_DEV --> MONGO_DEV
+```
 
-    REACT --> EXPRESS
-    EXPRESS --> PG
-    EXPRESS --> MONGO
-    DOCKER --> REACT
-    DOCKER --> EXPRESS
-    DOCKER --> PG
-    DOCKER --> MONGO
+---
+
+## 📁 Project Structure
+
+```
+user-management/
+├── 🎨 frontend/                    # React 19 + TypeScript Frontend
+│   ├── src/
+│   │   ├── components/             # Reusable UI components
+│   │   │   ├── admin/              # Admin-specific components
+│   │   │   ├── auth/               # Authentication components
+│   │   │   ├── common/             # Shared components
+│   │   │   ├── layout/             # Layout components
+│   │   │   ├── profile/            # User profile components
+│   │   │   └── ui/                 # Base UI components
+│   │   ├── contexts/               # React contexts (Auth, Theme, Toast)
+│   │   ├── hooks/                  # Custom React hooks
+│   │   ├── lib/                    # Utilities and configurations
+│   │   ├── locales/                # i18n translations (en, es, fr)
+│   │   ├── pages/                  # Page components
+│   │   ├── router/                 # React Router configuration
+│   │   ├── services/               # API service layer
+│   │   ├── tests/                  # Frontend tests
+│   │   └── types/                  # TypeScript type definitions
+│   ├── Dockerfile.dev              # Development container
+│   ├── Dockerfile.prod             # Production container
+│   └── package.json                # Dependencies and scripts
+│
+├── 🔧 backend/                     # Node.js + Express Backend
+│   ├── src/
+│   │   ├── builders/               # Response builders
+│   │   ├── config/                 # Configuration files
+│   │   ├── controllers/            # Route controllers
+│   │   ├── database/               # Database layer
+│   │   │   ├── migrations/         # Database migrations
+│   │   │   │   ├── postgres/       # PostgreSQL migrations
+│   │   │   │   └── mongo/          # MongoDB migrations
+│   │   │   └── seeders/            # Database seeders
+│   │   │       ├── postgres/       # PostgreSQL seeders
+│   │   │       └── mongo/          # MongoDB seeders
+│   │   ├── dto/                    # Data Transfer Objects
+│   │   ├── entities/               # Database entities
+│   │   ├── errors/                 # Custom error classes
+│   │   ├── formatters/             # Response formatters
+│   │   ├── interfaces/             # TypeScript interfaces
+│   │   ├── middleware/             # Express middleware
+│   │   ├── repositories/           # Data access layer
+│   │   ├── routes/                 # API routes
+│   │   ├── services/               # Business logic layer
+│   │   ├── tests/                  # Backend tests
+│   │   ├── translations/           # Backend i18n
+│   │   ├── types/                  # TypeScript types
+│   │   └── utils/                  # Utility functions
+│   ├── tests/                      # Test configurations
+│   ├── docs/                       # API documentation
+│   ├── database/                   # Database initialization
+│   ├── Dockerfile.dev              # Development container
+│   ├── Dockerfile.prod             # Production container
+│   └── package.json                # Dependencies and scripts
+│
+├── 🏗️ infrastructure/              # Infrastructure as Code
+│   ├── terraform/                  # Terraform configurations
+│   │   ├── environments/           # Environment-specific configs
+│   │   │   ├── dev/                # Development environment
+│   │   │   ├── staging/            # Staging environment
+│   │   │   └── prod/               # Production environment
+│   │   ├── modules/                # Reusable Terraform modules
+│   │   │   ├── networking/         # VPC, subnets, security groups
+│   │   │   ├── compute/            # ECS, ALB, auto-scaling
+│   │   │   ├── database/           # RDS, DocumentDB
+│   │   │   ├── security/           # IAM, secrets, certificates
+│   │   │   ├── monitoring/         # CloudWatch, logging
+│   │   │   └── cicd/               # CodePipeline, CodeBuild
+│   │   ├── shared/                 # Shared configurations
+│   │   └── scripts/                # Deployment scripts
+│   ├── kubernetes/                 # Kubernetes manifests
+│   │   ├── namespace.yaml          # Namespace definition
+│   │   ├── deployments.yaml        # Application deployments
+│   │   ├── services.yaml           # Service definitions
+│   │   ├── ingress.yaml            # Ingress configuration
+│   │   ├── configmap.yaml          # Configuration maps
+│   │   ├── secrets.yaml            # Secret definitions
+│   │   └── persistent-volumes.yaml # Storage definitions
+│   ├── docker/                     # Docker configurations
+│   │   ├── docker-compose.dev.yml  # Development stack
+│   │   ├── docker-compose.prod.yml # Production stack
+│   │   └── nginx/                  # Nginx configurations
+│   ├── scripts/                    # Infrastructure scripts
+│   └── aws/                        # AWS-specific documentation
+│
+├── 📚 docs/                        # Project documentation
+└── 🔧 Configuration Files
+    ├── .gitignore                  # Git ignore rules
+    ├── README.md                   # This file
+    └── .vscode/                    # VS Code settings
 ```
 
 ---
 
 ## 🔧 Technology Stack
 
-### Frontend
-- **React 19** - Modern UI framework with latest features
-- **TypeScript** - Type safety and better developer experience
-- **Vite** - Fast build tool and development server
-- **TailwindCSS** - Utility-first CSS framework
-- **TanStack Query** - Data fetching and state management
-- **React Hook Form** - Form handling and validation
+### 🎨 Frontend Stack
+- **React 19** - Latest React with concurrent features
+- **TypeScript 5.8** - Type safety and enhanced DX
+- **Vite 7.1** - Lightning-fast build tool
+- **TailwindCSS 3.4** - Utility-first CSS framework
+- **TanStack Query 5.89** - Server state management
+- **React Hook Form** - Performant form handling
+- **React Router 6** - Client-side routing
+- **i18next** - Internationalization (EN, ES, FR)
+- **Vitest** - Fast unit testing
 
-### Backend
-- **Node.js 20+** - JavaScript runtime
-- **Express.js** - Web application framework
-- **TypeScript** - Type safety for backend code
-- **JWT** - Authentication and authorization
-- **Winston** - Logging and monitoring
-- **Swagger** - API documentation
+### 🔧 Backend Stack
+- **Node.js 20+** - JavaScript runtime with latest features
+- **Express.js 4.18** - Minimal web framework
+- **TypeScript 5.1** - Type safety for backend
+- **JWT** - Stateless authentication
+- **bcryptjs** - Password hashing
+- **Winston 3.17** - Structured logging
+- **Swagger/OpenAPI** - API documentation
+- **Jest 29.6** - Testing framework
+- **class-validator** - DTO validation
 
-### Databases
-- **PostgreSQL 15** - Primary database for users and authentication
-- **MongoDB 7** - Document database for user profiles and dynamic data
+### 🗄️ Database Stack
+- **PostgreSQL 15** - ACID-compliant relational database
+  - Users, roles, authentication data
+  - Refresh tokens and audit logs
+- **MongoDB 7** - Document database
+  - User profiles and preferences
+  - Dynamic content and metadata
 
-### Infrastructure
-- **Docker** - Containerization for development and production
-- **AWS ECS** - Container orchestration in the cloud
-- **Terraform** - Infrastructure as Code
-- **Kubernetes** - Alternative orchestration platform
+### 🏗️ Infrastructure Stack
+- **Docker & Docker Compose** - Containerization
+- **AWS ECS Fargate** - Serverless containers
+- **Terraform 1.5+** - Infrastructure as Code
+- **Kubernetes 1.28** - Container orchestration
+- **AWS RDS** - Managed PostgreSQL
+- **AWS DocumentDB** - Managed MongoDB
+- **AWS ALB** - Load balancing
+- **AWS VPC** - Network isolation
+- **AWS Secrets Manager** - Secret management
+- **AWS CloudWatch** - Monitoring and logging
 
 ---
 
@@ -120,79 +263,124 @@ graph TB
 - Accessibility compliant (WCAG 2.1 AA)
 - Modern UI with TailwindCSS
 
-
-
 ---
 
 ## 🚀 Quick Start
 
-### 🐳 Option 1: Docker Development (Recommended)
+### � uOption 1: Docker Development (Recommended)
 
 ```bash
-# 🚀 One-Command Setup
-git clone <repository-url> && cd "user management"
+# Clone the repository
+git clone https://github.com/aathil-ali/User-Management.git
+cd "User-Management"
 
-# 🔥 Start the complete stack
+# Start the complete stack
 docker compose -f infrastructure/docker/docker-compose.dev.yml up -d
 
-# 📊 Monitor services
+# Monitor services
 docker compose -f infrastructure/docker/docker-compose.dev.yml logs -f
 
 # ✅ Services available at:
 # 🎨 Frontend: http://localhost:3000
 # 🔧 Backend:  http://localhost:8000
-# 📚 API Docs: http://localhost:8000/api-docs
+# � API Dodcs: http://localhost:8000/api-docs
 # 🏥 Health:   http://localhost:8000/health
 ```
 
-### 🔧 Option 2: Hybrid Development
+### 🔧 Option 2: Local Development
 
 ```bash
-# 🗄️ Start databases only
+# Start databases only
 cd backend && docker compose up -d
 
-# 🔧 Run backend locally
+# Backend setup
 npm install && cp .env.example .env
 npm run db:fresh  # Setup and seed databases
 npm run dev      # Start backend server
 
-# 🎨 Run frontend locally (new terminal)
+# Frontend setup (new terminal)
 cd ../frontend && npm install
 npm run dev      # Start frontend server
 ```
 
-### 📊 Service Health Check
+### 📊 Health Check
 
 ```bash
-# 🔍 Check all services
+# Check all services
 curl http://localhost:8000/health
 curl http://localhost:3000
 
-# 📈 View service logs
+# View logs
 docker logs user-mgmt-backend-dev
-docker logs user-mgmt-frontend-dev
 docker logs user-mgmt-postgres-dev
 docker logs user-mgmt-mongo-dev
 ```
 
 ---
 
-## 🗄️ Database Setup
+## 🗄️ Database Architecture
 
-### Database Architecture
-- **PostgreSQL**: Stores users, roles, authentication data, and refresh tokens
-- **MongoDB**: Stores user profiles, preferences, and audit logs
+### Dual Database Strategy
 
-### Database Schema
-```
-PostgreSQL Tables:
-├── users (id, email, password_hash, role, status, timestamps)
-├── roles (id, name, description, permissions)
-└── refresh_tokens (id, user_id, token_hash, expires_at)
+Our system uses a hybrid database approach optimized for different data types:
 
-MongoDB Collections:
-├── user_profiles (userId, profile, preferences, metadata)
-└── audit_logs (userId, action, details, timestamp)
+```mermaid
+erDiagram
+    %% PostgreSQL - Relational Data
+    USERS {
+        uuid id PK
+        string email UK
+        string password_hash
+        uuid role_id FK
+        string status
+        boolean email_verified
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ROLES {
+        uuid id PK
+        string name UK
+        string description
+        json permissions
+        timestamp created_at
+    }
+
+    REFRESH_TOKENS {
+        uuid id PK
+        uuid user_id FK
+        string token_hash
+        timestamp expires_at
+        boolean is_revoked
+        timestamp created_at
+    }
+
+    %% MongoDB - Document Data
+    USER_PROFILES {
+        ObjectId _id PK
+        string userId FK
+        object personalInfo
+        object preferences
+        object settings
+        array tags
+        date createdAt
+        date updatedAt
+    }
+
+    AUDIT_LOGS {
+        ObjectId _id PK
+        string userId FK
+        string action
+        object details
+        string ipAddress
+        string userAgent
+        date timestamp
+    }
+
+    USERS ||--o{ REFRESH_TOKENS : has
+    USERS ||--|| USER_PROFILES : has
+    USERS ||--o{ AUDIT_LOGS : generates
+    USERS }o--|| ROLES : belongs_to
 ```
 
 ### Database Commands
@@ -200,535 +388,351 @@ MongoDB Collections:
 ```bash
 cd backend
 
-# Setup and seed databases
-npm run db:fresh              # Run migrations and seed data
-npm run db:reset              # Reset databases and reseed
-npm run db:status             # Check migration status
+# 🚀 Quick Setup
+npm run db:fresh              # Fresh install: migrate + seed
+npm run db:reset              # Nuclear option: drop + fresh
 
-# Individual operations
+# 📊 Status & Health
+npm run db:status             # Check migration status
+npm run db:validate           # Validate connections
+
+# 🔄 Migrations
 npm run db:migrate            # Run pending migrations
+npm run db:migrate:rollback   # Rollback last migration
+
+# 🌱 Seeders
 npm run db:seed               # Insert demo data
+npm run db:seed:rollback      # Remove seeded data
 ```
 
 ### Default Users After Seeding
 
-| Role | Email | Password | Access Level |
-|------|-------|----------|--------------|
-| Super Admin | `admin@usermanagement.local` | `AdminPassword123!` | Full system access |
-| Admin | `demo.admin@usermanagement.local` | `DemoAdmin123!` | User management |
-| User | `john.doe@example.com` | `DemoUser123!` | Standard access |
+| Role | Email | Password | Permissions |
+|------|-------|----------|-------------|
+| **Super Admin** | `admin@usermanagement.local` | `AdminPassword123!` | Full system access, user management, system settings |
+| **Admin** | `demo.admin@usermanagement.local` | `DemoAdmin123!` | User management, reports, moderate content |
+| **User** | `john.doe@example.com` | `DemoUser123!` | Profile management, basic features |
+| **User** | `jane.smith@example.com` | `DemoUser123!` | Profile management, basic features |
+| **Guest** | `guest@example.com` | `GuestUser123!` | Read-only access, limited features |
 
 ---
 
-## ☁️ Deployment
+## ☁️ AWS Infrastructure
 
-### Docker Development
-```bash
-# Start all services with Docker
-docker compose -f infrastructure/docker/docker-compose.dev.yml up -d
+### Terraform Modules Architecture
 
-# Services will be available at:
-# Frontend: http://localhost:3000
-# Backend: http://localhost:8000
-# API Docs: http://localhost:8000/api-docs
+Our AWS infrastructure is built with modular Terraform configurations:
+
+```mermaid
+graph TB
+    subgraph "🌍 Terraform Environments"
+        DEV[Development<br/>Single AZ, Basic Resources]
+        STAGING[Staging<br/>Multi-AZ, Load Testing]
+        PROD[Production<br/>HA, Auto-scaling, Monitoring]
+    end
+
+    subgraph "🧩 Terraform Modules"
+        NET[Networking Module<br/>VPC, Subnets, Security Groups]
+        COMP[Compute Module<br/>ECS, ALB, Auto Scaling]
+        DB[Database Module<br/>RDS, DocumentDB]
+        SEC[Security Module<br/>IAM, Secrets, Certificates]
+        MON[Monitoring Module<br/>CloudWatch, Alarms]
+        CICD[CI/CD Module<br/>CodePipeline, CodeBuild]
+    end
+
+    DEV --> NET
+    DEV --> COMP
+    DEV --> DB
+    STAGING --> NET
+    STAGING --> COMP
+    STAGING --> DB
+    STAGING --> SEC
+    PROD --> NET
+    PROD --> COMP
+    PROD --> DB
+    PROD --> SEC
+    PROD --> MON
+    PROD --> CICD
 ```
 
-### AWS Deployment
-The project includes Terraform configurations for AWS deployment:
+### AWS Services Used
+
+| Service | Purpose | Environment | Configuration |
+|---------|---------|-------------|---------------|
+| **VPC** | Network isolation | All | 10.2.0.0/16 CIDR |
+| **ECS Fargate** | Container orchestration | All | Auto-scaling 2-10 tasks |
+| **Application Load Balancer** | Load balancing | All | Multi-AZ, health checks |
+| **RDS PostgreSQL** | Primary database | All | Multi-AZ in prod |
+| **DocumentDB** | MongoDB-compatible | All | Cluster mode |
+| **Secrets Manager** | Secret management | All | Auto-rotation enabled |
+| **CloudWatch** | Monitoring & logging | All | Custom dashboards |
+| **ECR** | Container registry | All | Vulnerability scanning |
+| **Route 53** | DNS management | Prod | Health checks |
+| **CloudFront** | CDN | Prod | Global edge locations |
+| **CodePipeline** | CI/CD pipeline | Prod | Multi-stage deployment |
+
+### Infrastructure Deployment
 
 ```bash
-# Deploy to AWS
+# 🔧 Development Environment
 cd infrastructure/terraform/environments/dev
 terraform init
-terraform plan
+terraform plan -var-file="terraform.tfvars"
+terraform apply -auto-approve
+
+# 🎭 Staging Environment
+cd ../staging
+terraform init
+terraform plan -var-file="staging.tfvars"
 terraform apply
+
+# 🚀 Production Environment
+cd ../prod
+terraform init
+terraform plan -var-file="prod.tfvars"
+terraform apply
+
+# 📊 View Infrastructure
+terraform output
+terraform show
 ```
 
-### Kubernetes Deployment
+### Environment Specifications
+
+| Environment | ECS Tasks | RDS Instance | DocumentDB | Monthly Cost |
+|-------------|-----------|--------------|------------|--------------|
+| **Development** | 1 Frontend, 1 Backend | db.t3.micro | 1 instance | ~$80 |
+| **Staging** | 2 Frontend, 2 Backend | db.t3.small | 2 instances | ~$200 |
+| **Production** | 3-10 Frontend, 3-15 Backend | db.r5.large Multi-AZ | 3 instance cluster | ~$500+ |
+
+---
+
+## ⚡ Kubernetes Deployment
+
+### Kubernetes Architecture
+
+Our Kubernetes setup provides an alternative to AWS ECS:
+
+```mermaid
+graph TB
+    subgraph "☸️ Kubernetes Cluster"
+        subgraph "🌐 Ingress Layer"
+            INGRESS[NGINX Ingress Controller]
+            CERT[cert-manager]
+        end
+        
+        subgraph "📦 user-management Namespace"
+            subgraph "🎨 Frontend Tier"
+                FE_DEPLOY[Frontend Deployment<br/>2-5 replicas]
+                FE_SVC[Frontend Service]
+            end
+            
+            subgraph "🔧 Backend Tier"
+                BE_DEPLOY[Backend Deployment<br/>2-5 replicas]
+                BE_SVC[Backend Service]
+            end
+            
+            subgraph "🗄️ Database Tier"
+                PG_DEPLOY[PostgreSQL StatefulSet]
+                MONGO_DEPLOY[MongoDB StatefulSet]
+                PG_SVC[PostgreSQL Service]
+                MONGO_SVC[MongoDB Service]
+            end
+        end
+        
+        subgraph "💾 Storage"
+            PG_PVC[PostgreSQL PVC<br/>10Gi]
+            MONGO_PVC[MongoDB PVC<br/>20Gi]
+        end
+        
+        subgraph "⚙️ Configuration"
+            CONFIG[ConfigMap]
+            SECRETS[Secrets]
+        end
+    end
+
+    INGRESS --> FE_SVC
+    INGRESS --> BE_SVC
+    FE_SVC --> FE_DEPLOY
+    BE_SVC --> BE_DEPLOY
+    BE_DEPLOY --> PG_SVC
+    BE_DEPLOY --> MONGO_SVC
+    PG_SVC --> PG_DEPLOY
+    MONGO_SVC --> MONGO_DEPLOY
+    PG_DEPLOY --> PG_PVC
+    MONGO_DEPLOY --> MONGO_PVC
+    CONFIG -.-> FE_DEPLOY
+    CONFIG -.-> BE_DEPLOY
+    SECRETS -.-> BE_DEPLOY
+    CERT -.-> INGRESS
+```
+
+### Kubernetes Deployment Commands
+
 ```bash
-# Deploy to Kubernetes
+# 🚀 Deploy Complete Stack
 cd infrastructure/kubernetes
+
+# Create namespace and basic resources
 kubectl apply -f namespace.yaml
-kubectl apply -f .
+kubectl apply -f configmap.yaml
+kubectl apply -f secrets.yaml
+
+# Deploy storage
+kubectl apply -f persistent-volumes.yaml
+
+# Deploy applications
+kubectl apply -f deployments.yaml
+kubectl apply -f services.yaml
+kubectl apply -f ingress.yaml
+
+# 📊 Monitor Deployment
+kubectl get pods -n user-management -w
+kubectl get services -n user-management
+kubectl logs -f deployment/backend-deployment -n user-management
+
+# 🔄 Update Applications
+kubectl set image deployment/frontend-deployment frontend=your-registry/frontend:v2.0 -n user-management
+kubectl rollout status deployment/frontend-deployment -n user-management
+
+# 📈 Scale Applications
+kubectl scale deployment frontend-deployment --replicas=5 -n user-management
+kubectl scale deployment backend-deployment --replicas=8 -n user-management
 ```
 
-### Available Environments
-- **Development**: Local Docker setup
-- **Staging**: AWS ECS with basic resources
-- **Production**: AWS ECS with high availability and monitoringion via CloudFlare<br/>
-• VPC with private subnets<br/>
-• Security groups & NACLs
-</td>
-<td>✅ Production</td>
-<td>100%</td>
-</tr>
+### Resource Specifications
 
-<tr>
-<td><strong>🔐 Authentication</strong></td>
-<td>
-• JWT with RS256 algorithm<br/>
-• Refresh token rotation<br/>
-• Account lockout policy<br/>
-• Password strength validation
-</td>
-<td>✅ Production</td>
-<td>100%</td>
-</tr>
-
-<tr>
-<td><strong>👥 Authorization</strong></td>
-<td>
-• Role-based access control<br/>
-• Permission-based operations<br/>
-• API endpoint protection<br/>
-• Resource-level permissions
-</td>
-<td>✅ Production</td>
-<td>100%</td>
-</tr>
-
-<tr>
-<td><strong>🔒 Data Protection</strong></td>
-<td>
-• Encryption at rest (AWS KMS)<br/>
-• TLS 1.3 in transit<br/>
-• Input validation & sanitization<br/>
-• SQL injection prevention
-</td>
-<td>✅ Production</td>
-<td>100%</td>
-</tr>
-
-<tr>
-<td><strong>🚨 Monitoring</strong></td>
-<td>
-• Real-time threat detection<br/>
-• Audit log monitoring<br/>
-• Suspicious activity alerts<br/>
-• Security incident response
-</td>
-<td>✅ Production</td>
-<td>90%</td>
-</tr>
-
-<tr>
-<td><strong>📋 Compliance</strong></td>
-<td>
-• GDPR compliance ready<br/>
-• SOC 2 Type II preparation<br/>
-• Security policy documentation<br/>
-• Regular security assessments
-</td>
-<td>🚧 In Progress</td>
-<td>75%</td>
-</tr>
-
-</table>
-
-### 🔒 Security Best Practices Checklist
-
-```
-🔐 Authentication & Authorization
-├── ✅ JWT tokens with secure algorithms (RS256)
-├── ✅ Refresh token rotation mechanism
-├── ✅ Multi-factor authentication ready
-├── ✅ Role-based access control (RBAC)
-├── ✅ Permission-based resource access
-├── ✅ Account lockout after failed attempts
-└── ✅ Password policy enforcement
-
-🛡️ Data Protection
-├── ✅ Encryption at rest (AES-256)
-├── ✅ TLS 1.3 for data in transit
-├── ✅ Input validation and sanitization
-├── ✅ SQL injection prevention
-├── ✅ XSS protection with CSP headers
-├── ✅ CSRF protection with SameSite cookies
-└── ✅ Sensitive data masking in logs
-
-🌐 Infrastructure Security
-├── ✅ VPC with private subnets
-├── ✅ Security groups with minimal access
-├── ✅ AWS WAF for web application protection
-├── ✅ DDoS protection and rate limiting
-├── ✅ Regular security patching
-├── ✅ Secrets management (AWS Secrets Manager)
-└── ✅ Network monitoring and intrusion detection
-
-📋 Compliance & Governance
-├── ✅ Audit logging for all actions
-├── ✅ Data retention policies
-├── ✅ Privacy by design implementation
-├── ✅ Regular security assessments
-├── ✅ Incident response procedures
-├── ✅ Security training for team
-└── 🚧 Third-party security audits
-```
+| Component | CPU Request | CPU Limit | Memory Request | Memory Limit | Replicas |
+|-----------|-------------|-----------|----------------|--------------|----------|
+| **Frontend** | 100m | 200m | 128Mi | 256Mi | 2-5 |
+| **Backend** | 250m | 500m | 256Mi | 512Mi | 2-5 |
+| **PostgreSQL** | 250m | 500m | 512Mi | 1Gi | 1 |
+| **MongoDB** | 250m | 500m | 512Mi | 1Gi | 1 |
 
 ---
 
-## 📈 Performance & Scaling
+## 🧪 Testing Strategy
 
-### ⚡ Performance Optimization Strategy
+### Comprehensive Testing Suite
 
-```mermaid
-graph TB
-    subgraph "🎨 Frontend Optimizations"
-        CODE_SPLIT[📦 Code Splitting]
-        LAZY_LOAD[⏳ Lazy Loading]
-        IMAGE_OPT[🖼️ Image Optimization]
-        CACHE_STRAT[💾 Caching Strategy]
-    end
-
-    subgraph "🔧 Backend Optimizations"
-        CONN_POOL[🏊 Connection Pooling]
-        QUERY_OPT[⚡ Query Optimization]
-        CACHE_LAYER[🔴 Redis Caching]
-        COMPRESS[🗜️ Response Compression]
-    end
-
-    subgraph "🗄️ Database Optimizations"
-        INDEX_OPT[📊 Index Optimization]
-        QUERY_PLAN[📈 Query Planning]
-        PARTITION[🔀 Data Partitioning]
-        REPLICA[👥 Read Replicas]
-    end
-
-    subgraph "☁️ Infrastructure Scaling"
-        AUTO_SCALE[📈 Auto Scaling]
-        LOAD_BAL[⚖️ Load Balancing]
-        CDN_EDGE[🌐 Edge Caching]
-        REGION[🌍 Multi-Region]
-    end
-
-    CODE_SPLIT --> CONN_POOL
-    LAZY_LOAD --> QUERY_OPT
-    IMAGE_OPT --> CACHE_LAYER
-    CACHE_STRAT --> COMPRESS
-    
-    CONN_POOL --> INDEX_OPT
-    QUERY_OPT --> QUERY_PLAN
-    CACHE_LAYER --> PARTITION
-    COMPRESS --> REPLICA
-    
-    INDEX_OPT --> AUTO_SCALE
-    QUERY_PLAN --> LOAD_BAL
-    PARTITION --> CDN_EDGE
-    REPLICA --> REGION
-```
-
-### 📊 Scaling Architecture
+Our testing strategy follows the testing pyramid with extensive coverage:
 
 ```mermaid
 graph TB
-    subgraph "🌍 Global Load Distribution"
-        USERS[👥 Global Users]
-        DNS[🔗 Route 53 DNS]
-        CDN[☁️ CloudFront CDN]
+    subgraph "🧪 Testing Pyramid"
+        E2E[🎭 E2E Tests<br/>Critical User Flows]
+        INTEGRATION[🔗 Integration Tests<br/>API & Database]
+        UNIT[� Uniet Tests<br/>Components & Functions]
+    end
+    
+    subgraph "🔧 Backend Testing"
+        BE_UNIT[Unit Tests<br/>Services, Controllers, Utils]
+        BE_INT[Integration Tests<br/>Database, API Endpoints]
+        BE_E2E[E2E Tests<br/>Complete Workflows]
+    end
+    
+    subgraph "🎨 Frontend Testing"
+        FE_UNIT[Unit Tests<br/>Components, Hooks, Utils]
+        FE_INT[Integration Tests<br/>API Calls, State Management]
+        FE_E2E[E2E Tests<br/>User Interactions]
     end
 
-    subgraph "🌐 Regional Deployment (us-east-1)"
-        ALB[⚖️ Application Load Balancer]
-        
-        subgraph "🎨 Frontend Tier (Auto Scaling 2-10)"
-            FE1[🎨 Frontend 1]
-            FE2[🎨 Frontend 2]
-            FEN[🎨 Frontend N...]
-        end
-        
-        subgraph "🔧 Backend Tier (Auto Scaling 3-15)"
-            BE1[🔧 Backend 1]
-            BE2[🔧 Backend 2]
-            BEN[🔧 Backend N...]
-        end
-    end
-
-    subgraph "🗄️ Data Tier (Highly Available)"
-        subgraph "📊 Primary Database Cluster"
-            RDS_PRIMARY[(🐘 RDS Primary)]
-            RDS_STANDBY[(🐘 RDS Standby)]
-        end
-        
-        subgraph "📖 Read Replica Cluster"
-            RDS_READ1[(📖 Read Replica 1)]
-            RDS_READ2[(📖 Read Replica 2)]
-        end
-        
-        subgraph "🗂️ Document Database"
-            DOC_PRIMARY[(🗂️ DocumentDB Primary)]
-            DOC_REPLICA[(🗂️ DocumentDB Replica)]
-        end
-        
-        subgraph "⚡ Caching Layer"
-            REDIS_PRIMARY[(🔴 Redis Primary)]
-            REDIS_REPLICA[(🔴 Redis Replica)]
-        end
-    end
-
-    USERS --> DNS
-    DNS --> CDN
-    CDN --> ALB
-    ALB --> FE1
-    ALB --> FE2
-    ALB --> FEN
-    FE1 -.-> BE1
-    FE2 -.-> BE2
-    FEN -.-> BEN
-    
-    BE1 --> RDS_PRIMARY
-    BE2 --> RDS_READ1
-    BEN --> RDS_READ2
-    RDS_PRIMARY -.-> RDS_STANDBY
-    RDS_PRIMARY -.-> RDS_READ1
-    RDS_PRIMARY -.-> RDS_READ2
-    
-    BE1 --> DOC_PRIMARY
-    BE2 --> DOC_REPLICA
-    DOC_PRIMARY -.-> DOC_REPLICA
-    
-    BE1 --> REDIS_PRIMARY
-    BE2 --> REDIS_REPLICA
-    REDIS_PRIMARY -.-> REDIS_REPLICA
+    E2E --> BE_E2E
+    E2E --> FE_E2E
+    INTEGRATION --> BE_INT
+    INTEGRATION --> FE_INT
+    UNIT --> BE_UNIT
+    UNIT --> FE_UNIT
 ```
 
-### 📈 Auto Scaling Configuration
+### Testing Commands
 
-<table>
-<tr>
-<th>🎯 Service</th>
-<th>🔢 Min</th>
-<th>🔢 Max</th>
-<th>📊 Scale Up Trigger</th>
-<th>📉 Scale Down Trigger</th>
-<th>⏱️ Cooldown</th>
-</tr>
-
-<tr>
-<td><strong>🎨 Frontend</strong></td>
-<td>2</td>
-<td>10</td>
-<td>CPU > 70% for 2min</td>
-<td>CPU < 30% for 5min</td>
-<td>300s</td>
-</tr>
-
-<tr>
-<td><strong>🔧 Backend</strong></td>
-<td>3</td>
-<td>15</td>
-<td>CPU > 65% or Memory > 80%</td>
-<td>CPU < 25% and Memory < 50%</td>
-<td>300s</td>
-</tr>
-
-<tr>
-<td><strong>🐘 RDS Read Replicas</strong></td>
-<td>1</td>
-<td>5</td>
-<td>Read IOPS > 80%</td>
-<td>Read IOPS < 40%</td>
-<td>600s</td>
-</tr>
-
-<tr>
-<td><strong>🗂️ DocumentDB</strong></td>
-<td>2</td>
-<td>6</td>
-<td>CPU > 75% for 5min</td>
-<td>CPU < 40% for 10min</td>
-<td>900s</td>
-</tr>
-
-</table>
-
-### ⚡ Performance Benchmarks
-
-<table>
-<tr>
-<th>📊 Metric</th>
-<th>🎯 Target</th>
-<th>📈 Current</th>
-<th>🏆 Best Practice</th>
-<th>🔧 Optimization</th>
-</tr>
-
-<tr>
-<td><strong>🌐 Page Load Time</strong></td>
-<td>< 2s</td>
-<td>1.2s</td>
-<td>< 1s</td>
-<td>CDN + Code splitting</td>
-</tr>
-
-<tr>
-<td><strong>⚡ API Response Time</strong></td>
-<td>< 200ms</td>
-<td>150ms</td>
-<td>< 100ms</td>
-<td>Database indexing</td>
-</tr>
-
-<tr>
-<td><strong>📊 Concurrent Users</strong></td>
-<td>10,000</td>
-<td>15,000</td>
-<td>50,000</td>
-<td>Horizontal scaling</td>
-</tr>
-
-<tr>
-<td><strong>🎯 Error Rate</strong></td>
-<td>< 0.1%</td>
-<td>0.05%</td>
-<td>< 0.01%</td>
-<td>Better error handling</td>
-</tr>
-
-<tr>
-<td><strong>💾 Memory Usage</strong></td>
-<td>< 80%</td>
-<td>65%</td>
-<td>< 70%</td>
-<td>Memory optimization</td>
-</tr>
-
-<tr>
-<td><strong>🔄 Throughput</strong></td>
-<td>1,000 req/s</td>
-<td>1,500 req/s</td>
-<td>5,000 req/s</td>
-<td>Load balancing</td>
-</tr>
-
-</table>
+| Test Type | Backend | Frontend | Coverage Target |
+|-----------|---------|----------|-----------------|
+| **Unit Tests** | `npm run test:unit` | `npm test` | > 90% |
+| **Integration Tests** | `npm run test:integration` | `npm run test:integration` | > 80% |
+| **E2E Tests** | `npm run test:e2e` | `npm run test:e2e` | > 70% |
+| **All Tests** | `npm run test:all` | `npm run test:all` | > 85% |
+| **Coverage Report** | `npm run test:coverage` | `npm run test:coverage` | Detailed HTML |
+| **Watch Mode** | `npm run test:watch` | `npm run test:ui` | Development |
 
 ---
 
-## 🎯 Quick Reference
-
-### 🚀 Essential Commands
+## 🎯 Essential Commands Reference
 
 ```bash
-# 🐳 Docker Development
+# 🐳 Docker Operations
 docker compose -f infrastructure/docker/docker-compose.dev.yml up -d
+docker compose -f infrastructure/docker/docker-compose.dev.yml down
 docker compose -f infrastructure/docker/docker-compose.dev.yml logs -f
 
-# 🗄️ Database Operations
+# 🗄️ Database Management
 cd backend
 npm run db:fresh              # Fresh setup with demo data
-npm run db:status             # Check database health
-npm run db:migrate            # Run pending migrations
-npm run db:seed               # Seed demo data
+npm run db:reset              # Nuclear reset
+npm run db:status             # Check health
+npm run db:migrate            # Run migrations
+npm run db:seed               # Insert demo data
 
 # 🧪 Testing
-npm run test                  # Run all tests
+npm run test                  # All tests
 npm run test:unit             # Unit tests only
+npm run test:integration      # Integration tests
+npm run test:e2e              # End-to-end tests
 npm run test:coverage         # Coverage report
-npm run test:watch            # Watch mode
 
-# 🏗️ Infrastructure
+# 🏗️ Infrastructure Deployment
 cd infrastructure/terraform/environments/dev
-terraform init && terraform apply
+terraform init && terraform plan && terraform apply
 
-# ☸️ Kubernetes
+# ☸️ Kubernetes Deployment
 cd infrastructure/kubernetes
 kubectl apply -f .
 kubectl get pods -n user-management
 
 # 🔧 Development
-cd frontend && npm run dev    # Start frontend
-cd backend && npm run dev     # Start backend
+cd frontend && npm run dev    # Frontend dev server
+cd backend && npm run dev     # Backend dev server
 ```
 
-### 📚 Important URLs
+---
 
-<table>
-<tr>
-<th>🔗 Service</th>
-<th>🌐 Development</th>
-<th>🏢 Production</th>
-</tr>
+## 📚 Documentation & Support
 
-<tr>
-<td><strong>🎨 Frontend</strong></td>
-<td><a href="http://localhost:3000">localhost:3000</a></td>
-<td><code>https://yourdomain.com</code></td>
-</tr>
-
-<tr>
-<td><strong>🔧 Backend API</strong></td>
-<td><a href="http://localhost:8000">localhost:8000</a></td>
-<td><code>https://api.yourdomain.com</code></td>
-</tr>
-
-<tr>
-<td><strong>📚 API Documentation</strong></td>
-<td><a href="http://localhost:8000/api-docs">localhost:8000/api-docs</a></td>
-<td><code>https://api.yourdomain.com/api-docs</code></td>
-</tr>
-
-<tr>
-<td><strong>🏥 Health Check</strong></td>
-<td><a href="http://localhost:8000/health">localhost:8000/health</a></td>
-<td><code>https://api.yourdomain.com/health</code></td>
-</tr>
-
-<tr>
-<td><strong>📊 Grafana Dashboard</strong></td>
-<td>-</td>
-<td><code>https://monitoring.yourdomain.com</code></td>
-</tr>
-
-</table>
+| Resource | Description | Link |
+|----------|-------------|------|
+| **API Documentation** | Interactive Swagger docs | [localhost:8000/api-docs](http://localhost:8000/api-docs) |
+| **Frontend README** | Frontend-specific documentation | [frontend/README.md](frontend/README.md) |
+| **Backend README** | Backend-specific documentation | [backend/README.md](backend/README.md) |
+| **Infrastructure Guide** | Deployment and infrastructure | [infrastructure/README.md](infrastructure/README.md) |
+| **Contributing Guide** | How to contribute | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| **License** | MIT License details | [LICENSE](LICENSE) |
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### 🔧 Development Setup
-
-1. **🍴 Fork the repository**
-2. **🔗 Clone your fork**: `git clone <your-fork-url>`
-3. **🌿 Create feature branch**: `git checkout -b feature/amazing-feature`
-4. **🐳 Start development environment**: `docker compose -f infrastructure/docker/docker-compose.dev.yml up -d`
-5. **💻 Make your changes**
-6. **🧪 Run tests**: `npm test`
-7. **📤 Push changes**: `git push origin feature/amazing-feature`
-8. **🔃 Create Pull Request**
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes and test thoroughly
+4. Commit your changes: `git commit -m 'Add amazing feature'`
+5. Push to the branch: `git push origin feature/amazing-feature`
+6. Open a Pull Request
 
 ---
 
 ## 📝 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-
-## 🆘 Support & Documentation
 
 <div align="center">
 
-### 📚 Additional Resources
-
-[![Documentation](https://img.shields.io/badge/📚-Documentation-blue?style=for-the-badge)](docs/)
-[![API Reference](https://img.shields.io/badge/🔧-API_Reference-green?style=for-the-badge)](http://localhost:8000/api-docs)
-[![Architecture Guide](https://img.shields.io/badge/🏗️-Architecture-orange?style=for-the-badge)](docs/architecture.md)
-[![Deployment Guide](https://img.shields.io/badge/🚀-Deployment-red?style=for-the-badge)](docs/deployment.md)
-
-### 💬 Get Help
-
-[![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/yourdiscord)
-[![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-FE7A16?style=for-the-badge&logo=stack-overflow&logoColor=white)](https://stackoverflow.com/questions/tagged/user-management-system)
-[![GitHub Issues](https://img.shields.io/badge/GitHub-Issues-000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yourrepo/issues)
-
----
-
 **⭐ If you found this project helpful, please give it a star!**
 
-**🚀 Built with modern technologies and enterprise-grade architecture**
+**Built with modern technologies and enterprise-grade architecture**
 
-*Made with ❤️ by the User Management Team*
+*Made with ❤️ for the developer community*
 
 </div>
