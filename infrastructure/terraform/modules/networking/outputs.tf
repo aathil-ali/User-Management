@@ -149,40 +149,4 @@ output "vpc_cidr_blocks" {
   value       = [aws_vpc.main.cidr_block]
 }
 
-# Security Group Outputs
-output "alb_security_group_id" {
-  description = "ID of the Application Load Balancer security group"
-  value       = aws_security_group.alb.id
-}
-
-output "ecs_security_group_id" {
-  description = "ID of the ECS tasks security group"
-  value       = aws_security_group.ecs_tasks.id
-}
-
-output "database_security_group_id" {
-  description = "ID of the database security group"
-  value       = aws_security_group.database.id
-}
-
-output "rds_security_group_id" {
-  description = "ID of the RDS security group"
-  value       = aws_security_group.rds.id
-}
-
-output "documentdb_security_group_id" {
-  description = "ID of the DocumentDB security group"
-  value       = aws_security_group.documentdb.id
-}
-
-
-
-output "bastion_security_group_id" {
-  description = "ID of the bastion host security group"
-  value       = aws_security_group.bastion.id
-}
-
-output "vpc_endpoints_security_group_id" {
-  description = "ID of the VPC endpoints security group"
-  value       = aws_security_group.vpc_endpoints.id
-}
+# Note: Security groups are defined in the security module, not networking module

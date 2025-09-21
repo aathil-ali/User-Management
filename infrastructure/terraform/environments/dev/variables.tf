@@ -9,7 +9,7 @@ variable "aws_region" {
 variable "github_repo_owner" {
   description = "GitHub repository owner"
   type        = string
-  default     = "your-github-username"  # Update this with actual GitHub username
+  default     = "aathil-ali"
 }
 
 variable "github_repo_name" {
@@ -21,7 +21,7 @@ variable "github_repo_name" {
 variable "domain_name" {
   description = "Domain name for the application"
   type        = string
-  default     = "dev.yourdomain.com"  # Update this with actual domain
+  default     = "dev.usermanagement.local"
 }
 
 # Development-specific overrides
