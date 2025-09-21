@@ -1,0 +1,68 @@
+{
+  "auth": {
+    "registration_success": "User registered successfully",
+    "login_success": "Login successful",
+    "logout_success": "Logout successful",
+    "invalid_credentials": "Invalid email or password",
+    "registration_failed": "Registration failed",
+    "login_failed": "Login failed",
+    "logout_failed": "Logout failed",
+    "token_refresh_failed": "Token refresh failed",
+    "token_refresh_success": "Token refreshed successfully",
+    "authentication_required": "Authentication required",
+    "authentication_failed": "Authentication failed",
+    "not_implemented": "Authentication not implemented yet"
+  },
+  "user": {
+    "profile_retrieved": "Profile retrieved successfully",
+    "profile_updated": "Profile updated successfully",
+    "profile_update_failed": "Failed to update profile",
+    "account_deleted": "Account deleted successfully",
+    "account_deletion_failed": "Failed to delete account",
+    "user_not_found": "User not found",
+    "users_retrieved": "Users retrieved successfully",
+    "users_retrieval_failed": "Failed to retrieve users"
+  },
+  "validation": {
+    "email_required": "Email is required",
+    "email_invalid": "Please provide a valid email address",
+    "email_already_exists": "This email address is already registered",
+    "password_required": "Password is required",
+    "password_min_length": "Password must be at least {min} characters long",
+    "name_required": "Name is required",
+    "validation_failed": "Validation failed",
+    "validation_error": "Validation error occurred"
+  },
+  "authorization": {
+    "insufficient_permissions": "Insufficient permissions to access this resource",
+    "admin_access_required": "Administrator access required",
+    "authorization_error": "Authorization error occurred"
+  },
+  "server": {
+    "routes_initialized": "Routes initialized successfully",
+    "routes_initialization_failed": "Failed to initialize routes",
+    "server_starting": "Server starting on port {port}",
+    "graceful_shutdown": "Graceful shutdown initiated",
+    "internal_server_error": "Internal Server Error",
+    "route_not_found": "Route {route} not found"
+  },
+  "database": {
+    "connection_failed": "Database connection failed",
+    "transaction_failed": "Database transaction failed",
+    "query_failed": "Database query failed"
+  },
+  "audit": {
+    "user_registered": "User registration attempted",
+    "user_logged_in": "User logged in",
+    "user_logged_out": "User logged out",
+    "profile_updated": "User profile updated",
+    "account_deleted": "User account deleted",
+    "admin_accessed_users": "Administrator accessed user list",
+    "admin_accessed_user": "Administrator accessed user details"
+  },
+  "errors": {
+    "unknown_error": "An unknown error occurred",
+    "method_not_implemented": "Method not implemented yet",
+    "operation_failed": "Operation failed"
+  }
+}

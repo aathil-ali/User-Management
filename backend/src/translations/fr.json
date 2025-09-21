@@ -1,0 +1,67 @@
+{
+  "auth": {
+    "registration_success": "Utilisateur enregistré avec succès",
+    "login_success": "Connexion réussie",
+    "logout_success": "Déconnexion réussie",
+    "invalid_credentials": "Email ou mot de passe invalide",
+    "registration_failed": "Échec de l'enregistrement",
+    "login_failed": "Échec de la connexion",
+    "logout_failed": "Échec de la déconnexion",
+    "token_refresh_failed": "Échec du renouvellement du jeton",
+    "token_refresh_success": "Jeton renouvelé avec succès",
+    "authentication_required": "Authentification requise",
+    "authentication_failed": "Échec de l'authentification",
+    "not_implemented": "Authentification pas encore implémentée"
+  },
+  "user": {
+    "profile_retrieved": "Profil récupéré avec succès",
+    "profile_updated": "Profil mis à jour avec succès",
+    "profile_update_failed": "Échec de la mise à jour du profil",
+    "account_deleted": "Compte supprimé avec succès",
+    "account_deletion_failed": "Échec de la suppression du compte",
+    "user_not_found": "Utilisateur non trouvé",
+    "users_retrieved": "Utilisateurs récupérés avec succès",
+    "users_retrieval_failed": "Échec de la récupération des utilisateurs"
+  },
+  "validation": {
+    "email_required": "L'email est requis",
+    "email_invalid": "Veuillez fournir une adresse email valide",
+    "password_required": "Le mot de passe est requis",
+    "password_min_length": "Le mot de passe doit contenir au moins {min} caractères",
+    "name_required": "Le nom est requis",
+    "validation_failed": "Échec de la validation",
+    "validation_error": "Erreur de validation"
+  },
+  "authorization": {
+    "insufficient_permissions": "Permissions insuffisantes pour accéder à cette ressource",
+    "admin_access_required": "Accès administrateur requis",
+    "authorization_error": "Erreur d'autorisation"
+  },
+  "server": {
+    "routes_initialized": "Routes initialisées avec succès",
+    "routes_initialization_failed": "Échec de l'initialisation des routes",
+    "server_starting": "Serveur démarrant sur le port {port}",
+    "graceful_shutdown": "Arrêt gracieux initié",
+    "internal_server_error": "Erreur Interne du Serveur",
+    "route_not_found": "Route {route} non trouvée"
+  },
+  "database": {
+    "connection_failed": "Échec de la connexion à la base de données",
+    "transaction_failed": "Échec de la transaction de base de données",
+    "query_failed": "Échec de la requête de base de données"
+  },
+  "audit": {
+    "user_registered": "Tentative d'enregistrement d'utilisateur",
+    "user_logged_in": "Utilisateur connecté",
+    "user_logged_out": "Utilisateur déconnecté",
+    "profile_updated": "Profil utilisateur mis à jour",
+    "account_deleted": "Compte utilisateur supprimé",
+    "admin_accessed_users": "Administrateur a accédé à la liste des utilisateurs",
+    "admin_accessed_user": "Administrateur a accédé aux détails de l'utilisateur"
+  },
+  "errors": {
+    "unknown_error": "Une erreur inconnue s'est produite",
+    "method_not_implemented": "Méthode pas encore implémentée",
+    "operation_failed": "Échec de l'opération"
+  }
+}

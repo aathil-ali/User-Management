@@ -1,0 +1,318 @@
+{
+  "auth": {
+    "logout": "Logout",
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your account",
+      "cardTitle": "Sign in",
+      "cardDescription": "Enter your email and password to access your account",
+      "signIn": "Sign in",
+      "signingIn": "Signing in...",
+      "forgotPassword": "Forgot your password?",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "secureLogin": "Secure Login"
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Join us to get started",
+      "cardTitle": "Sign up",
+      "cardDescription": "Create your account to get started",
+      "createAccount": "Create account",
+      "creatingAccount": "Creating account...",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy"
+    },
+    "resetPassword": {
+      "title": "Reset your password",
+      "subtitle": "Enter your email address and we'll send you a reset link",
+      "cardTitle": "Forgot password",
+      "cardDescription": "No worries, we'll send you reset instructions",
+      "sendReset": "Send reset link",
+      "sending": "Sending...",
+      "backToLogin": "Back to sign in",
+      "helpText": "Remember your password?",
+      "emailSent": {
+        "title": "Check your email",
+        "subtitle": "We sent a password reset link to",
+        "instruction": "Didn't receive the email? Check your spam folder or try again.",
+        "tryAgain": "Try again",
+        "backToLogin": "Back to sign in"
+      },
+      "notImplemented": "Failed to send reset email. This feature is not yet implemented."
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "name": "Full Name",
+      "rememberMe": "Remember me",
+      "acceptTerms": "I accept the"
+    },
+    "placeholders": {
+      "email": "Enter your email",
+      "password": "Enter your password",
+      "confirmPassword": "Confirm your password",
+      "name": "Enter your full name"
+    }
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "admin": "Admin",
+    "users": "Users",
+    "settings": "Settings",
+    "userManagement": "User Management"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info",
+    "confirm": "Confirm",
+    "close": "Close",
+    "submit": "Submit",
+    "reset": "Reset",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "refresh": "Refresh",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "actions": "Actions",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "createdAt": "Created",
+    "updatedAt": "Updated",
+    "yes": "Yes",
+    "no": "No",
+    "theme": "Toggle theme"
+  },
+  "profile": {
+    "title": "Profile",
+    "myProfile": "My Profile",
+    "editProfile": "Edit Profile",
+    "updateProfile": "Update Profile",
+    "updateSuccess": "Profile updated successfully",
+    "deleteAccount": "Delete Account",
+    "deleteAccountTitle": "Delete Account",
+    "deleteAccountDescription": "Are you sure you want to delete your account? This action cannot be undone.",
+    "deleteConfirm": "Are you sure you want to delete your account?",
+    "personalInfo": "Personal Information",
+    "preferences": "Preferences",
+    "theme": "Theme",
+    "language": "Language",
+    "notifications": "Notifications",
+    "timezone": "Timezone",
+    "avatar": "Avatar",
+    "changeAvatar": "Change Avatar",
+    "viewInfo": "View and manage your account information",
+    "updateInfo": "Update your personal information and preferences",
+    "loadingProfile": "Loading profile...",
+    "loadingSettings": "Loading settings...",
+    "failedToLoad": "Failed to load profile",
+    "failedToLoadSettings": "Failed to load settings",
+    "password": {
+      "title": "Change Password",
+      "subtitle": "Update your account password",
+      "cardTitle": "Password Security",
+      "cardDescription": "Choose a strong password to keep your account secure",
+      "section": "Change Your Password",
+      "current": "Current Password",
+      "currentPlaceholder": "Enter your current password",
+      "new": "New Password",
+      "newPlaceholder": "Enter your new password",
+      "confirm": "Confirm New Password",
+      "confirmPlaceholder": "Confirm your new password",
+      "changing": "Changing...",
+      "changePassword": "Change Password",
+      "changeSuccess": "Password changed successfully",
+      "changeError": "Failed to change password",
+      "securityTip": {
+        "title": "Security Tip:",
+        "description": "Use a unique password that you don't use anywhere else. Consider using a password manager to generate and store strong passwords securely."
+      }
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "subtitle": "Manage users and monitor system activity",
+      "error": "Failed to load admin data. Please try refreshing the page."
+    },
+    "sidebar": {
+      "title": "Admin Panel",
+      "subtitle": "System Administration",
+      "management": "Management",
+      "privilege": "Administrative Access",
+      "warning": "Use admin features responsibly",
+      "dashboard": "Admin Dashboard",
+      "userManagement": "User Management",
+      "createUser": "Create User",
+      "analytics": "Analytics",
+      "auditLogs": "Audit Logs",
+      "systemHealth": "System Health",
+      "settings": "Admin Settings"
+    },
+    "stats": {
+      "totalUsers": "Total Users",
+      "allRegistered": "All registered users",
+      "activeUsers": "Active Users",
+      "currentlyActive": "Currently active",
+      "suspendedUsers": "Suspended",
+      "temporarilyBlocked": "Temporarily blocked",
+      "adminUsers": "Administrators",
+      "systemAdmins": "System administrators"
+    },
+    "users": {
+      "title": "User Management",
+      "description": "View and manage all system users",
+      "createUser": "Create User",
+      "searchPlaceholder": "Search users by name or email...",
+      "filters": {
+        "allRoles": "All Roles",
+        "allStatuses": "All Statuses"
+      },
+      "table": {
+        "user": "User",
+        "role": "Role",
+        "status": "Status",
+        "joined": "Joined",
+        "lastLogin": "Last Login",
+        "actions": "Actions"
+      },
+      "create": {
+        "title": "Create New User",
+        "subtitle": "Add a new user to the system",
+        "creating": "Creating...",
+        "createUser": "Create User",
+        "notes": {
+          "title": "Important Notes:",
+          "password": "The user will need to change their password on first login.",
+          "email": "A welcome email will be sent to the user's email address.",
+          "verification": "The user will need to verify their email address before full access is granted.",
+          "admin": "Admin users have full access to all system features and user management."
+        }
+      }
+    },
+    "userManagement": "User Management",
+    "totalUsers": "Total Users",
+    "activeUsers": "Active Users",
+    "inactiveUsers": "Inactive Users",
+    "newUsers": "New Users This Month",
+    "manageUser": "Manage User",
+    "deleteUser": "Delete User",
+    "userDetails": "User Details",
+    "userActions": "User Actions",
+    "bulkActions": "Bulk Actions",
+    "selectAll": "Select All",
+    "selectedUsers": "{{count}} user selected",
+    "selectedUsers_other": "{{count}} users selected",
+    "noUsersFound": "No users found",
+    "userRole": "User Role",
+    "userStatus": "User Status",
+    "lastLogin": "Last Login",
+    "registrationDate": "Registration Date"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome, {{name}}!",
+    "overview": "Overview",
+    "recentActivity": "Recent Activity",
+    "quickActions": "Quick Actions",
+    "statistics": "Statistics"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "unauthorized": "You are not authorized to perform this action.",
+    "forbidden": "Access denied.",
+    "notFound": "The requested resource was not found.",
+    "validation": "Please check your input and try again.",
+    "serverError": "Server error. Please try again later.",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordRequired": "Password is required",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "nameRequired": "Name is required",
+    "nameTooShort": "Name must be at least 2 characters",
+    "AUTH_INVALID_CREDENTIALS": "Invalid email or password. Please try again.",
+    "AUTH_USER_NOT_FOUND": "No account found with this email address.",
+    "AUTH_INVALID_PASSWORD": "Invalid password. Please try again.",
+    "AUTH_ACCOUNT_LOCKED": "Account is temporarily locked. Please try again later.",
+    "AUTH_ACCOUNT_DISABLED": "Your account has been disabled. Please contact support.",
+    "AUTH_TOO_MANY_ATTEMPTS": "Too many failed attempts. Please try again later.",
+    "AUTH_EMAIL_ALREADY_EXISTS": "This email address is already registered. Try signing in instead.",
+    "AUTH_WEAK_PASSWORD": "Password is too weak. Please choose a stronger password.",
+    "AUTH_INVALID_EMAIL": "Please enter a valid email address.",
+    "AUTH_PASSWORD_MISMATCH": "Passwords do not match.",
+    "VALIDATION_ERROR": "Please check your input and try again.",
+    "NETWORK_ERROR": "Network error. Please check your connection and try again.",
+    "SERVER_ERROR": "Server error. Please try again later.",
+    "TIMEOUT_ERROR": "Request timed out. Please try again.",
+    "UNKNOWN_ERROR": "An unexpected error occurred. Please try again.",
+    "AUTH_INVALID_TOKEN": "Invalid or expired reset token. Please request a new password reset.",
+    "AUTH_TOKEN_EXPIRED": "Reset token has expired. Please request a new password reset."
+  },
+  "notifications": {
+    "loginSuccess": "Welcome back!",
+    "registerSuccess": "Account created successfully!",
+    "logoutSuccess": "Signed out successfully",
+    "profileUpdated": "Profile updated successfully",
+    "passwordChanged": "Password changed successfully",
+    "accountDeleted": "Account deleted successfully",
+    "userDeleted": "User deleted successfully",
+    "userUpdated": "User updated successfully",
+    "settingsSaved": "Settings saved successfully"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "fr": "Français"
+  },
+  "themes": {
+    "light": "Light",
+    "dark": "Dark",
+    "auto": "System"
+  },
+  "roles": {
+    "user": "User",
+    "admin": "Admin",
+    "super_admin": "Super Admin"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "suspended": "Suspended"
+  },
+  "pages": {
+    "notFound": {
+      "title": "Page not found",
+      "description": "Sorry, we couldn't find the page you're looking for.",
+      "goHome": "Go back home"
+    },
+    "unauthorized": {
+      "title": "Unauthorized",
+      "description": "You don't have permission to access this page.",
+      "goHome": "Go back home"
+    },
+    "serverError": {
+      "title": "Server Error",
+      "description": "Something went wrong on our end. Please try again later.",
+      "goHome": "Go back home"
+    }
+  }
+}

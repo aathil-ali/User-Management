@@ -1,0 +1,67 @@
+{
+  "auth": {
+    "registration_success": "Usuario registrado exitosamente",
+    "login_success": "Inicio de sesión exitoso",
+    "logout_success": "Cierre de sesión exitoso",
+    "invalid_credentials": "Email o contraseña inválidos",
+    "registration_failed": "Falló el registro",
+    "login_failed": "Falló el inicio de sesión",
+    "logout_failed": "Falló el cierre de sesión",
+    "token_refresh_failed": "Falló la renovación del token",
+    "token_refresh_success": "Token renovado exitosamente",
+    "authentication_required": "Autenticación requerida",
+    "authentication_failed": "Falló la autenticación",
+    "not_implemented": "Autenticación aún no implementada"
+  },
+  "user": {
+    "profile_retrieved": "Perfil obtenido exitosamente",
+    "profile_updated": "Perfil actualizado exitosamente",
+    "profile_update_failed": "Falló la actualización del perfil",
+    "account_deleted": "Cuenta eliminada exitosamente",
+    "account_deletion_failed": "Falló la eliminación de la cuenta",
+    "user_not_found": "Usuario no encontrado",
+    "users_retrieved": "Usuarios obtenidos exitosamente",
+    "users_retrieval_failed": "Falló la obtención de usuarios"
+  },
+  "validation": {
+    "email_required": "El email es requerido",
+    "email_invalid": "Por favor proporcione un email válido",
+    "password_required": "La contraseña es requerida",
+    "password_min_length": "La contraseña debe tener al menos {min} caracteres",
+    "name_required": "El nombre es requerido",
+    "validation_failed": "Falló la validación",
+    "validation_error": "Ocurrió un error de validación"
+  },
+  "authorization": {
+    "insufficient_permissions": "Permisos insuficientes para acceder a este recurso",
+    "admin_access_required": "Acceso de administrador requerido",
+    "authorization_error": "Ocurrió un error de autorización"
+  },
+  "server": {
+    "routes_initialized": "Rutas inicializadas exitosamente",
+    "routes_initialization_failed": "Falló la inicialización de rutas",
+    "server_starting": "Servidor iniciando en puerto {port}",
+    "graceful_shutdown": "Apagado elegante iniciado",
+    "internal_server_error": "Error Interno del Servidor",
+    "route_not_found": "Ruta {route} no encontrada"
+  },
+  "database": {
+    "connection_failed": "Falló la conexión a la base de datos",
+    "transaction_failed": "Falló la transacción de base de datos",
+    "query_failed": "Falló la consulta de base de datos"
+  },
+  "audit": {
+    "user_registered": "Intento de registro de usuario",
+    "user_logged_in": "Usuario inició sesión",
+    "user_logged_out": "Usuario cerró sesión",
+    "profile_updated": "Perfil de usuario actualizado",
+    "account_deleted": "Cuenta de usuario eliminada",
+    "admin_accessed_users": "Administrador accedió a lista de usuarios",
+    "admin_accessed_user": "Administrador accedió a detalles de usuario"
+  },
+  "errors": {
+    "unknown_error": "Ocurrió un error desconocido",
+    "method_not_implemented": "Método aún no implementado",
+    "operation_failed": "Falló la operación"
+  }
+}

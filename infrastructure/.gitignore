@@ -1,0 +1,100 @@
+# Terraform
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+*.tfvars.json
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+terraform.tfplan
+terraform.tfplan.*
+
+# Terraform modules
+.terraform.d/
+
+# Sensitive auto-generated files
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Kubernetes
+*.kubeconfig
+kubeconfig
+.kube/
+
+# Helm
+charts/*.tgz
+.helm/
+
+# AWS
+.aws/
+aws-credentials
+
+# Docker
+.dockerignore
+
+# Scripts
+*.sh.bak
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# SSL certificates and keys
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+
+# Secrets
+secrets/
+*.secret
+*.private
+
+# Local development
+.local/
+local/
+
+# Ansible
+*.retry
+.vault_pass
+
+# Packer
+packer_cache/
+*.box
+
+# Vagrant
+.vagrant/
+
+# Environment specific
+.env
+.env.local
+.env.*.local
