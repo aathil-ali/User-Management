@@ -105,28 +105,8 @@ export const ROLE_PERMISSIONS: Record<string, string[]> = {
   ]
 };
 
-/**
- * Helper type for permission checking
- */
-export interface PermissionCheck {
-  permission: Permission;
-  resource: Resource;
-  resourceId?: string;  // For checking ownership (e.g., user can only access their own profile)
-}
+import { IUserContext } from '@/interfaces/permissions/IUserContext';
+import { IPermissionCheck } from '@/interfaces/permissions/IPermissionCheck';
+import { IPermissionResult } from '@/interfaces/permissions/IPermissionResult';
 
-/**
- * User context for permission checking
- */
-export interface UserContext {
-  id: string;
-  role: string;
-  permissions?: string[];
-}
-
-/**
- * Permission check result
- */
-export interface PermissionResult {
-  allowed: boolean;
-  reason?: string;
-}
+export { IUserContext as UserContext, IPermissionCheck as PermissionCheck, IPermissionResult as PermissionResult };

@@ -24,58 +24,19 @@ export function createUserRoutes(userController: UserController): Router {
    *         content:
    *           application/json:
    *             schema:
-   *               type: object
-   *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
-   *                   type: string
-   *                   example: "Profile retrieved successfully"
-   *                 data:
-   *                   type: object
-   *                   properties:
-   *                     id:
-   *                       type: string
-   *                       example: "123e4567-e89b-12d3-a456-426614174000"
-   *                     email:
-   *                       type: string
-   *                       example: "user@example.com"
-   *                     name:
-   *                       type: string
-   *                       example: "John Doe"
-   *                     role:
-   *                       type: string
-   *                       example: "user"
-   *                     avatar:
-   *                       type: string
-   *                       nullable: true
-   *                       example: "https://example.com/avatar.jpg"
-   *                     preferences:
-   *                       type: object
-   *                       properties:
-   *                         theme:
-   *                           type: string
-   *                           example: "light"
-   *                         notifications:
-   *                           type: boolean
-   *                           example: true
-   *                         language:
-   *                           type: string
-   *                           example: "en"
-   *                         timezone:
-   *                           type: string
-   *                           example: "UTC"
-   *                     createdAt:
-   *                       type: string
-   *                       format: date-time
-   *                     updatedAt:
-   *                       type: string
-   *                       format: date-time
+   *               $ref: '#/components/schemas/User'
    *       401:
    *         description: Unauthorized - Invalid or missing token
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       403:
    *         description: Account is not accessible (inactive user)
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   router.get('/profile', userController.getProfile.bind(userController));
 
@@ -92,74 +53,32 @@ export function createUserRoutes(userController: UserController): Router {
    *       content:
    *         application/json:
    *           schema:
-   *             type: object
-   *             properties:
-   *               name:
-   *                 type: string
-   *                 example: "Jane Doe"
-   *               avatar:
-   *                 type: string
-   *                 nullable: true
-   *                 example: "https://example.com/new-avatar.jpg"
-   *               preferences:
-   *                 type: object
-   *                 properties:
-   *                   theme:
-   *                     type: string
-   *                     enum: ["light", "dark", "auto"]
-   *                     example: "dark"
-   *                   notifications:
-   *                     type: boolean
-   *                     example: false
-   *                   language:
-   *                     type: string
-   *                     enum: ["en", "es", "fr"]
-   *                     example: "es"
-   *                   timezone:
-   *                     type: string
-   *                     example: "America/New_York"
+   *             $ref: '#/components/schemas/UpdateProfileDto'
    *     responses:
    *       200:
    *         description: Profile updated successfully
    *         content:
    *           application/json:
    *             schema:
-   *               type: object
-   *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
-   *                   type: string
-   *                   example: "Profile updated successfully"
-   *                 data:
-   *                   type: object
-   *                   properties:
-   *                     id:
-   *                       type: string
-   *                     email:
-   *                       type: string
-   *                     name:
-   *                       type: string
-   *                     role:
-   *                       type: string
-   *                     avatar:
-   *                       type: string
-   *                       nullable: true
-   *                     preferences:
-   *                       type: object
-   *                     createdAt:
-   *                       type: string
-   *                       format: date-time
-   *                     updatedAt:
-   *                       type: string
-   *                       format: date-time
+   *               $ref: '#/components/schemas/User'
    *       400:
    *         description: Validation error
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       401:
    *         description: Unauthorized
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       403:
    *         description: Account is not accessible
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   router.put('/profile',
     ValidationMiddleware.validateDto(UpdateProfileDto),
@@ -181,24 +100,25 @@ export function createUserRoutes(userController: UserController): Router {
    *         content:
    *           application/json:
    *             schema:
-   *               type: object
-   *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
-   *                   type: string
-   *                   example: "Account deleted successfully"
-   *                 data:
-   *                   type: object
-   *                   nullable: true
-   *                   example: null
+   *               $ref: '#/components/schemas/SuccessResponse'
    *       401:
    *         description: Unauthorized
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       403:
    *         description: Account is not accessible
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       409:
    *         description: Account is already deleted
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   router.delete('/account', userController.deleteAccount.bind(userController));
 

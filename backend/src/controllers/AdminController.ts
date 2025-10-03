@@ -1,5 +1,5 @@
 import { Response, NextFunction } from 'express';
-import { BaseController, EnhancedRequest } from './BaseController';
+import { BaseController} from './BaseController';
 import { IUserService } from '@/interfaces/IUserService';
 
 export class AdminController extends BaseController {
@@ -11,16 +11,16 @@ export class AdminController extends BaseController {
     await this.handleRequest(req, res, next, async (req, res, t) => {
       const { page = 1, limit = 10 } = req.query;
       const userList = await this.userService.getAllUsers(Number(page), Number(limit));
-      
+
       this.sendPaginatedSuccess(
-        res, 
-        userList.users, 
-        { 
-          page: userList.page, 
-          limit: userList.limit, 
-          total: userList.total 
-        }, 
-        t.user('users_retrieved'), 
+        res,
+        userList.users,
+        {
+          page: userList.page,
+          limit: userList.limit,
+          total: userList.total
+        },
+        t.user('users_retrieved'),
         req
       );
     });

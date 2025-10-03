@@ -1,5 +1,6 @@
 import { ErrorCode, ERROR_CODE_REGISTRY } from '@/types/error-codes';
-import { 
+import { IErrorCodeMetadata } from '@/interfaces/errors/IErrorCodeMetadata';
+import {
   EmailAlreadyExistsError,
   InvalidCredentialsError,
   UserNotFoundError,
@@ -9,8 +10,9 @@ import {
   AccountNotVerifiedError,
   AccountDisabledError,
   WeakPasswordError,
-  AuthRateLimitError
-} from '@/errors/auth';
+  AuthRateLimitError,
+  ErrorSerializer
+} from '@/errors';
 
 describe('Error Code Registry and Auth Errors', () => {
   describe('Error Code Registry Completeness', () => {
@@ -33,8 +35,8 @@ describe('Error Code Registry and Auth Errors', () => {
       ];
 
       authErrorCodes.forEach(code => {
-        expect(ERROR_CODE_REGISTRY[code]).toBeDefined();
-        expect(ERROR_CODE_REGISTRY[code].category).toBe('Authentication');
+        expect(ERROR_CODE_REGISTRY[code] as IErrorCodeMetadata).toBeDefined();
+        expect((ERROR_CODE_REGISTRY[code] as IErrorCodeMetadata).category).toBe('Authentication');
       });
     });
 
@@ -51,8 +53,8 @@ describe('Error Code Registry and Auth Errors', () => {
       ];
 
       validationErrorCodes.forEach(code => {
-        expect(ERROR_CODE_REGISTRY[code]).toBeDefined();
-        expect(ERROR_CODE_REGISTRY[code].category).toBe('Validation');
+        expect(ERROR_CODE_REGISTRY[code] as IErrorCodeMetadata).toBeDefined();
+        expect((ERROR_CODE_REGISTRY[code] as IErrorCodeMetadata).category).toBe('Validation');
       });
     });
 
@@ -64,8 +66,8 @@ describe('Error Code Registry and Auth Errors', () => {
       ];
 
       rateLimitCodes.forEach(code => {
-        expect(ERROR_CODE_REGISTRY[code]).toBeDefined();
-        expect(ERROR_CODE_REGISTRY[code].category).toBe('RateLimit');
+        expect(ERROR_CODE_REGISTRY[code] as IErrorCodeMetadata).toBeDefined();
+        expect((ERROR_CODE_REGISTRY[code] as IErrorCodeMetadata).category).toBe('RateLimit');
       });
     });
   });
@@ -184,7 +186,7 @@ describe('Error Code Registry and Auth Errors', () => {
 
     it('should serialize to JSON correctly', () => {
       const error = new EmailAlreadyExistsError('test@example.com');
-      const json = error.toJSON();
+      const json = ErrorSerializer.toJSON(error);
 
       expect(json.name).toBe('EmailAlreadyExistsError');
       expect(json.code).toBe(ErrorCode.VALIDATION_EMAIL_ALREADY_EXISTS);
@@ -197,7 +199,7 @@ describe('Error Code Registry and Auth Errors', () => {
 
     it('should create user-safe JSON without sensitive information', () => {
       const error = new EmailAlreadyExistsError('test@example.com');
-      const userSafeJson = error.toUserSafeJSON();
+      const userSafeJson = ErrorSerializer.toUserSafeJSON(error);
 
       expect(userSafeJson.code).toBe(ErrorCode.VALIDATION_EMAIL_ALREADY_EXISTS);
       expect(userSafeJson.retryable).toBe(false);
@@ -220,7 +222,7 @@ describe('Error Code Registry and Auth Errors', () => {
       
       // Check that each error code has a registry entry
       allErrorCodes.forEach(code => {
-        expect(ERROR_CODE_REGISTRY[code]).toBeDefined();
+        expect(ERROR_CODE_REGISTRY[code] as IErrorCodeMetadata).toBeDefined();
       });
     });
 
@@ -238,8 +240,8 @@ describe('Error Code Registry and Auth Errors', () => {
     it('should have consistent HTTP status codes for similar error types', () => {
       // Authentication errors should be 401, 403, or 423
       const authCodes = Object.entries(ERROR_CODE_REGISTRY)
-        .filter(([_, meta]) => meta.category === 'Authentication')
-        .map(([_, meta]) => meta.httpStatus);
+        .filter(([_, meta]) => (meta as IErrorCodeMetadata).category === 'Authentication')
+        .map(([_, meta]) => (meta as IErrorCodeMetadata).httpStatus);
       
       authCodes.forEach(status => {
         expect([401, 403, 423].includes(status)).toBe(true);
@@ -247,8 +249,8 @@ describe('Error Code Registry and Auth Errors', () => {
 
       // Validation errors should be 400 or 409
       const validationCodes = Object.entries(ERROR_CODE_REGISTRY)
-        .filter(([_, meta]) => meta.category === 'Validation')
-        .map(([_, meta]) => meta.httpStatus);
+        .filter(([_, meta]) => (meta as IErrorCodeMetadata).category === 'Validation')
+        .map(([_, meta]) => (meta as IErrorCodeMetadata).httpStatus);
       
       validationCodes.forEach(status => {
         expect([400, 409].includes(status)).toBe(true);
@@ -256,8 +258,8 @@ describe('Error Code Registry and Auth Errors', () => {
 
       // Rate limit errors should be 429
       const rateLimitCodes = Object.entries(ERROR_CODE_REGISTRY)
-        .filter(([_, meta]) => meta.category === 'RateLimit')
-        .map(([_, meta]) => meta.httpStatus);
+        .filter(([_, meta]) => (meta as IErrorCodeMetadata).category === 'RateLimit')
+        .map(([_, meta]) => (meta as IErrorCodeMetadata).httpStatus);
       
       rateLimitCodes.forEach(status => {
         expect(status).toBe(429);

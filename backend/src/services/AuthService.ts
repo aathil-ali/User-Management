@@ -3,7 +3,7 @@ import { IUserAuthRepository } from '@/interfaces/IUserAuthRepository';
 import { IUserProfileRepository } from '@/interfaces/IUserProfileRepository';
 import { RegisterDto } from '@/dto/auth/RegisterDto';
 import { LoginDto } from '@/dto/auth/LoginDto';
-import { AuthResponseDto } from '@/dto/auth/AuthResponseDto';
+import { AuthResponse } from '@/models/AuthResponse';
 import { User, UserWithoutPassword } from '@/entities/User';
 import { UserProfile } from '@/entities/UserProfile';
 import { EncryptionUtils } from '@/utils/encryption';
@@ -13,8 +13,8 @@ import {
   InvalidCredentialsError,
   UserNotFoundError,
   InvalidRefreshTokenError
-} from '@/errors/auth';
-import { NotFoundError, InternalServerError } from '@/errors/ApplicationError';
+} from '@/errors';
+import { NotFoundError, InternalServerError } from '@/errors';
 import { ErrorCode } from '@/types/error-codes';
 
 export class AuthService implements IAuthService {
@@ -23,7 +23,7 @@ export class AuthService implements IAuthService {
     private userProfileRepository: IUserProfileRepository
   ) {}
 
-  async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
+  async register(registerDto: RegisterDto): Promise<AuthResponse> {
     const { email, password, name } = registerDto;
 
     // 1. Validate email uniqueness
@@ -81,7 +81,7 @@ export class AuthService implements IAuthService {
     };
   }
 
-  async login(loginDto: LoginDto): Promise<AuthResponseDto> {
+  async login(loginDto: LoginDto): Promise<AuthResponse> {
     const { email, password } = loginDto;
 
     // 1. Find user by email

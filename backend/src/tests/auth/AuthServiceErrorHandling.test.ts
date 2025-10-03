@@ -4,8 +4,8 @@ import {
   InvalidCredentialsError,
   UserNotFoundError,
   InvalidRefreshTokenError
-} from '@/errors/auth';
-import { NotFoundError } from '@/errors/ApplicationError';
+} from '@/errors';
+import { NotFoundError } from '@/errors';
 import { ErrorCode } from '@/types/error-codes';
 
 describe('AuthService Error Handling Architecture', () => {

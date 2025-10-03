@@ -1,5 +1,5 @@
-import { ErrorResponse } from '@/dto/responses/ErrorResponse';
-import { ApplicationError } from '@/errors/ApplicationError';
+import { ErrorResponse } from '@/types/responses/ErrorResponse';
+import { ApplicationError } from '@/errors';
 import { ErrorContextSanitizer } from '@/services/ErrorContextSanitizer';
 
 /**

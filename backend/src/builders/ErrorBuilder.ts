@@ -1,6 +1,6 @@
-import { ApplicationError } from '@/errors/ApplicationError';
+import { ApplicationError, ErrorFactory } from '@/errors';
 import { ErrorCode } from '@/types/error-codes';
-import { ErrorResponse } from '@/dto/responses/ErrorResponse';
+import { ErrorResponse } from '@/types/responses/ErrorResponse';
 import { RetryCalculator } from '@/services/RetryCalculator';
 import { ErrorContextSanitizer } from '@/services/ErrorContextSanitizer';
 
@@ -74,7 +74,7 @@ export class ErrorBuilder {
       includeDebugInfo?: boolean;
     } = {}
   ): ErrorResponse {
-    const appError = ApplicationError.fromError(error, code, {
+    const appError = ErrorFactory.fromError(error, code, {
       correlationId: options.correlationId,
       requestId: options.requestId,
       url: options.path,

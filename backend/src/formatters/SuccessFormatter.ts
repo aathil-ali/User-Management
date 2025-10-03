@@ -1,4 +1,4 @@
-import { SuccessResponse } from '@/dto/responses/SuccessResponse';
+import { SuccessResponse } from '@/types/responses/SuccessResponse';
 
 /**
  * Success Response Formatter

@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import { ErrorResponse } from '@/dto/responses/ErrorResponse';
+import { ErrorResponse } from '@/types/responses/ErrorResponse';
 import { ErrorFormatter } from '@/formatters/ErrorFormatter';
-import { ApplicationError, ErrorFactory } from '@/errors/ApplicationError';
+import { ApplicationError, ErrorFactory } from '@/errors';
 import { ErrorCode } from '@/types/error-codes';
 import { TranslationService } from '@/services/TranslationService';
 import { LocalizedRequest } from './LanguageMiddleware';

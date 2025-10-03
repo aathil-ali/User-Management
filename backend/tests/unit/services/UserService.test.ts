@@ -2,8 +2,8 @@ import { UserService } from '../../../src/services/UserService';
 import { IUserAuthRepository } from '../../../src/interfaces/IUserAuthRepository';
 import { IUserProfileRepository } from '../../../src/interfaces/IUserProfileRepository';
 import { User } from '../../../src/entities/User';
-import { UserProfile } from '../../../src/entities/UserProfile';
-import { UserDto } from '../../../src/dto/user/UserDto';
+import { UserProfile as UserProfileEntity } from '../../../src/entities/UserProfile';
+import { UserProfile } from '../../../src/models/UserProfile';
 import { UpdateProfileDto } from '../../../src/dto/user/UpdateProfileDto';
 import { ErrorCode } from '../../../src/types/error-codes';
 
@@ -53,7 +53,7 @@ describe('UserService', () => {
         updatedAt: new Date('2023-01-02T00:00:00Z'),
       };
 
-      const mockProfile: UserProfile = {
+      const mockProfile: UserProfileEntity = {
         _id: 'profile-123',
         userId: userId,
         email: 'test@example.com',
@@ -202,7 +202,7 @@ describe('UserService', () => {
         updatedAt: new Date('2023-01-02T00:00:00Z'),
       };
 
-      const mockProfile: UserProfile = {
+      const mockProfile: UserProfileEntity = {
         _id: 'profile-123',
         userId: userId,
         email: 'test@example.com',
@@ -272,7 +272,7 @@ describe('UserService', () => {
         updatedAt: new Date('2023-01-02T00:00:00Z'),
       };
 
-      const mockCurrentProfile: UserProfile = {
+      const mockCurrentProfile: UserProfileEntity = {
         _id: 'profile-123',
         userId: userId,
         email: 'test@example.com',
@@ -302,7 +302,7 @@ describe('UserService', () => {
         },
       };
 
-      const mockUpdatedProfile: UserProfile = {
+      const mockUpdatedProfile: UserProfileEntity = {
         ...mockCurrentProfile,
         profile: {
           firstName: 'Updated',
@@ -336,7 +336,7 @@ describe('UserService', () => {
       mockUserProfileRepository.update.mockResolvedValue(mockUpdatedProfile);
 
       // Mock getProfile call (since updateProfile calls it at the end)
-      const expectedResult: UserDto = {
+      const expectedResult: UserProfile = {
         id: userId,
         email: 'test@example.com',
         name: 'Updated Name',
@@ -466,7 +466,7 @@ describe('UserService', () => {
         updatedAt: new Date(),
       };
 
-      const mockCurrentProfile: UserProfile = {
+      const mockCurrentProfile: UserProfileEntity = {
         _id: 'profile-123',
         userId: userId,
         email: 'test@example.com',
@@ -500,7 +500,7 @@ describe('UserService', () => {
       mockUserProfileRepository.findByUserId.mockResolvedValue(mockCurrentProfile);
       mockUserProfileRepository.update.mockResolvedValue(mockCurrentProfile);
 
-      const expectedResult: UserDto = {
+      const expectedResult: UserProfile = {
         id: userId,
         email: 'test@example.com',
         name: 'Only Name Updated',
@@ -548,7 +548,7 @@ describe('UserService', () => {
         updatedAt: new Date(),
       };
 
-      const mockCurrentProfile: UserProfile = {
+      const mockCurrentProfile: UserProfileEntity = {
         _id: 'profile-123',
         userId: userId,
         email: 'test@example.com',
@@ -588,7 +588,7 @@ describe('UserService', () => {
       mockUserProfileRepository.findByUserId.mockResolvedValue(mockCurrentProfile);
       mockUserProfileRepository.update.mockResolvedValue(mockCurrentProfile);
 
-      const expectedResult: UserDto = {
+      const expectedResult: UserProfile = {
         id: userId,
         email: 'test@example.com',
         name: 'John Doe',
@@ -633,7 +633,7 @@ describe('UserService', () => {
         updatedAt: new Date('2023-01-02T00:00:00Z'),
       };
 
-      const mockCurrentProfile: UserProfile = {
+      const mockCurrentProfile: UserProfileEntity = {
         _id: 'profile-123',
         userId: userId,
         email: 'test@example.com',
@@ -682,7 +682,7 @@ describe('UserService', () => {
         updatedAt: new Date(),
       };
 
-      const mockUpdatedProfile: UserProfile = {
+      const mockUpdatedProfile: UserProfileEntity = {
         ...mockCurrentProfile,
         profile: {
           ...mockCurrentProfile.profile,
@@ -833,7 +833,7 @@ describe('UserService', () => {
         updatedAt: new Date(),
       };
 
-      const mockCurrentProfile: UserProfile = {
+      const mockCurrentProfile: UserProfileEntity = {
         _id: 'profile-123',
         userId: userId,
         email: 'test@example.com',
@@ -979,7 +979,7 @@ describe('UserService', () => {
         },
       ];
 
-      const mockProfiles: (UserProfile | null)[] = [
+      const mockProfiles: (UserProfileEntity | null)[] = [
         {
           _id: 'profile-1',
           userId: 'user-1',
@@ -1246,7 +1246,7 @@ describe('UserService', () => {
         updatedAt: new Date('2023-01-02T00:00:00Z'),
       };
 
-      const mockProfile: UserProfile = {
+      const mockProfile: UserProfileEntity = {
         _id: 'profile-123',
         userId: userId,
         email: 'test@example.com',

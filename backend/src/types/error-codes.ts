@@ -132,20 +132,14 @@ export enum ErrorCode {
 /**
  * Error Code Metadata - Additional information for each error code
  */
-export interface ErrorCodeMetadata {
-  httpStatus: number;
-  category: string;
-  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-  retryable: boolean;
-  userFacing: boolean;
-  logLevel: 'debug' | 'info' | 'warn' | 'error' | 'fatal';
-  requiresAlert: boolean;
-}
+import { IErrorCodeMetadata } from '@/interfaces/errors/IErrorCodeMetadata';
+
+export { IErrorCodeMetadata as ErrorCodeMetadata };
 
 /**
  * Error Code Registry - Maps error codes to their metadata
  */
-export const ERROR_CODE_REGISTRY: Record<ErrorCode, ErrorCodeMetadata> = {
+export const ERROR_CODE_REGISTRY: Record<ErrorCode, IErrorCodeMetadata> = {
   // Authentication Errors
   [ErrorCode.AUTH_INVALID_CREDENTIALS]: {
     httpStatus: 401,

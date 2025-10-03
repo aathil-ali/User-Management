@@ -7,12 +7,12 @@ import { RegisterDto } from '../../../src/dto/auth/RegisterDto';
 import { LoginDto } from '../../../src/dto/auth/LoginDto';
 import { EncryptionUtils } from '../../../src/utils/encryption';
 import { v4 as uuidv4 } from 'uuid';
-import { 
+import {
   EmailAlreadyExistsError,
   InvalidCredentialsError,
   UserNotFoundError,
   InvalidRefreshTokenError
-} from '../../../src/errors/auth';
+} from '../../../src/errors';
 
 // Mock external dependencies
 jest.mock('../../../src/utils/encryption');

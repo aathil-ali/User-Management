@@ -1,16 +1,10 @@
 import { Response, NextFunction } from 'express';
-import { AuthenticatedRequest } from './AuthMiddleware';
 import { LanguageMiddleware } from './LanguageMiddleware';
 import { BaseMiddleware } from './BaseMiddleware';
 
 /**
  * Role-based Authorization Middleware
  * Now follows SOLID principles:
- * - SRP: Only handles role-based authorization
- * - OCP: Extensible through BaseMiddleware
- * - LSP: Proper request type contracts
- * - ISP: Focused interface
- * - DIP: Depends on abstractions (BaseMiddleware)
  */
 export class RoleMiddleware extends BaseMiddleware {
   

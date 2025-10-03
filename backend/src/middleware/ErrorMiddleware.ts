@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, ErrorRequestHandler, RequestHandler } from 'express';
-import { ApplicationError, ErrorFactory } from '@/errors/ApplicationError';
-import { ErrorResponse } from '@/dto/responses/ErrorResponse';
+import { ApplicationError, ErrorFactory } from '@/errors';
+import { ErrorResponse } from '@/types/responses/ErrorResponse';
 import { ErrorFormatter } from '@/formatters/ErrorFormatter';
 import { ErrorCode } from '@/types/error-codes';
 import { LocalizedRequest, LanguageMiddleware } from './LanguageMiddleware';

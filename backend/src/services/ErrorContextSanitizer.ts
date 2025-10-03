@@ -1,4 +1,4 @@
-import { ErrorContext } from '@/errors/ApplicationError';
+import { IErrorContext } from '@/errors';
 
 /**
  * Error Context Sanitizer Service
@@ -8,8 +8,8 @@ export class ErrorContextSanitizer {
   /**
    * Sanitize context information (remove sensitive data)
    */
-  static sanitize(context: ErrorContext): Partial<ErrorContext> {
-    const sanitized: Partial<ErrorContext> = {
+  static sanitize(context: IErrorContext): Partial<IErrorContext> {
+    const sanitized: Partial<IErrorContext> = {
       timestamp: context.timestamp,
       operation: context.operation,
       resource: context.resource,

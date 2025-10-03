@@ -1,30 +1,9 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { IRequestWithContext } from '@/interfaces/middleware';
 
-/**
- * Extended request interface with correlation and context information
- */
-export interface RequestWithContext extends Request {
-  correlationId: string;
-  requestId: string;
-  startTime: number;
-  context: {
-    correlationId: string;
-    requestId: string;
-    userId?: string;
-    userRole?: string;
-    userAgent?: string;
-    ip: string;
-    method: string;
-    url: string;
-    timestamp: Date;
-    performance: {
-      startTime: number;
-      duration?: number;
-      memoryUsage?: NodeJS.MemoryUsage;
-    };
-  };
-}
+// Re-export for backward compatibility
+export type RequestWithContext = IRequestWithContext;
 
 /**
  * Request Context Middleware

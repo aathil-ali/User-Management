@@ -3,7 +3,7 @@ import { validate, ValidationError } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import { LocalizedRequest, LanguageMiddleware } from './LanguageMiddleware';
 import { BaseMiddleware } from './BaseMiddleware';
-import { ErrorFactory } from '@/errors/ApplicationError';
+import { ErrorFactory } from '@/errors';
 import { ErrorCode } from '@/types/error-codes';
 
 /**

@@ -29,6 +29,9 @@
     "password_required": "La contraseña es requerida",
     "password_min_length": "La contraseña debe tener al menos {min} caracteres",
     "name_required": "El nombre es requerido",
+    "user_id_required": "El ID de usuario es requerido",
+    "user_id_must_be_string": "El ID de usuario debe ser una cadena",
+    "user_id_must_be_uuid": "El ID de usuario debe ser un UUID válido",
     "validation_failed": "Falló la validación",
     "validation_error": "Ocurrió un error de validación"
   },

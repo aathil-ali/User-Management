@@ -2,19 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { LocalizedRequest, LanguageMiddleware } from './LanguageMiddleware';
 import { BaseMiddleware } from './BaseMiddleware';
-import { ErrorFactory } from '@/errors/ApplicationError';
+import { ErrorFactory } from '@/errors';
 import { ErrorCode } from '@/types/error-codes';
 
-// Strengthen request contract - remove optional user for authenticated requests
-export interface UnauthenticatedRequest extends LocalizedRequest {}
-
-export interface AuthenticatedRequest extends LocalizedRequest {
-  user: {  // Required, not optional - follows LSP properly
-    id: string;
-    email: string;
-    role: string;
-  };
-}
+import { IUnauthenticatedRequest } from '@/interfaces/middleware/IUnauthenticatedRequest';
+import { IAuthenticatedRequest } from '@/interfaces/middleware/IAuthenticatedRequest';
 
 /**
  * Authentication Middleware

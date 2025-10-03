@@ -1,11 +1,7 @@
-import { 
-  Permission, 
-  Resource, 
-  ROLE_PERMISSIONS, 
-  PermissionCheck, 
-  UserContext, 
-  PermissionResult 
-} from '@/types/permissions';
+import { Permission, Resource, ROLE_PERMISSIONS } from '@/types/permissions';
+import { IUserContext as UserContext } from '@/interfaces/permissions/IUserContext';
+import { IPermissionCheck as PermissionCheck } from '@/interfaces/permissions/IPermissionCheck';
+import { IPermissionResult as PermissionResult } from '@/interfaces/permissions/IPermissionResult';
 
 /**
  * Permission Service

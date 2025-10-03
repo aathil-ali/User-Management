@@ -1,19 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import { BaseMiddleware } from './BaseMiddleware';
 import { PermissionService } from '@/services/PermissionService';
-import { Permission, Resource, PermissionCheck, UserContext } from '@/types/permissions';
-import { ErrorFactory } from '@/errors/ApplicationError';
+import { Permission, Resource } from '@/types/permissions';
+import { IUserContext as UserContext } from '@/interfaces/permissions/IUserContext';
+import { IPermissionCheck as PermissionCheck } from '@/interfaces/permissions/IPermissionCheck';
+import { IPermissionResult as PermissionResult } from '@/interfaces/permissions/IPermissionResult';
+import { ErrorFactory } from '@/errors';
 import { ErrorCode } from '@/types/error-codes';
 import { LanguageMiddleware, LocalizedRequest } from './LanguageMiddleware';
+import { IAuthenticatedRequest } from '@/interfaces/middleware/IAuthenticatedRequest';
+
 
 // Extend the LocalizedRequest interface to include user information
-interface AuthenticatedRequest extends LocalizedRequest {
-  user?: {
-    id: string;
-    email: string;
-    role: string;
-  };
-}
 
 /**
  * Permission Middleware
@@ -25,7 +23,7 @@ export class PermissionMiddleware extends BaseMiddleware {
    * Check if user has a specific permission
    */
   static requirePermission(permission: Permission, resource: Resource) {
-    return async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    return async (req: IAuthenticatedRequest, res: Response, next: NextFunction) => {
       const middleware = new PermissionMiddleware();
 
       try {
@@ -100,7 +98,7 @@ export class PermissionMiddleware extends BaseMiddleware {
    * Check if user has any of the specified permissions
    */
   static requireAnyPermission(checks: Array<{permission: Permission, resource: Resource}>) {
-    return async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    return async (req: IAuthenticatedRequest, res: Response, next: NextFunction) => {
       const middleware = new PermissionMiddleware();
 
       try {
@@ -156,7 +154,7 @@ export class PermissionMiddleware extends BaseMiddleware {
    * Require admin permissions (any admin-level access)
    */
   static requireAdmin() {
-    return async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    return async (req: IAuthenticatedRequest, res: Response, next: NextFunction) => {
       const middleware = new PermissionMiddleware();
 
       try {
@@ -206,7 +204,7 @@ export class PermissionMiddleware extends BaseMiddleware {
    * Require super admin permissions
    */
   static requireSuperAdmin() {
-    return async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    return async (req: IAuthenticatedRequest, res: Response, next: NextFunction) => {
       const middleware = new PermissionMiddleware();
 
       try {
@@ -255,7 +253,7 @@ export class PermissionMiddleware extends BaseMiddleware {
    * Allow access to own resources only (for regular users)
    */
   static requireOwnership() {
-    return async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    return async (req: IAuthenticatedRequest, res: Response, next: NextFunction) => {
       const middleware = new PermissionMiddleware();
 
       try {
@@ -315,7 +313,7 @@ export class PermissionMiddleware extends BaseMiddleware {
   /**
    * Helper method: Get user context from request
    */
-  static getUserContext(req: AuthenticatedRequest): UserContext | null {
+  static getUserContext(req: IAuthenticatedRequest): UserContext | null {
     if (!req.user) return null;
     
     return {

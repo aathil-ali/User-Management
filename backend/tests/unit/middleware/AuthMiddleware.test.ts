@@ -2,13 +2,13 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { AuthMiddleware } from '../../../src/middleware/AuthMiddleware';
 import { LanguageMiddleware } from '../../../src/middleware/LanguageMiddleware';
-import { ErrorFactory } from '../../../src/errors/ApplicationError';
+import { ErrorFactory } from '../../../src/errors';
 import { ErrorCode } from '../../../src/types/error-codes';
 
 // Mock dependencies
 jest.mock('jsonwebtoken');
 jest.mock('../../../src/middleware/LanguageMiddleware');
-jest.mock('../../../src/errors/ApplicationError');
+jest.mock('../../../src/errors');
 
 const mockJwt = jwt as jest.Mocked<typeof jwt>;
 const mockLanguageMiddleware = LanguageMiddleware as jest.Mocked<typeof LanguageMiddleware>;

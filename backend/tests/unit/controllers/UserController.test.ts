@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserController } from '../../../src/controllers/UserController';
 import { IUserService } from '../../../src/interfaces/IUserService';
-import { UserDto } from '../../../src/dto/user/UserDto';
+import { UserProfile } from '../../../src/models/UserProfile';
 import { UpdateProfileDto } from '../../../src/dto/user/UpdateProfileDto';
 
 // Mock UserService
@@ -24,7 +24,16 @@ const createMockExpressObjects = (userId?: string) => {
     body: {},
     user: userId ? { id: userId, role: 'user' } : undefined,
     language: 'en',
-  } as any as Request;
+    context: {
+      correlationId: 'test-correlation-id',
+      requestId: 'test-request-id',
+      startTime: Date.now(),
+      userId: userId,
+    },
+    correlationId: 'test-correlation-id',
+    requestId: 'test-request-id',
+    startTime: Date.now(),
+  } as any;
 
   const res = {
     status: jest.fn().mockReturnThis(),
@@ -51,7 +60,7 @@ describe('UserController', () => {
     it('should get user profile successfully', async () => {
       // Arrange
       const userId = 'user-123';
-      const mockUserProfile: UserDto = {
+      const mockUserProfile: UserProfile = {
         id: userId,
         email: 'user@example.com',
         name: 'Test User',
@@ -121,7 +130,7 @@ describe('UserController', () => {
         },
       };
 
-      const mockUpdatedProfile: UserDto = {
+      const mockUpdatedProfile: UserProfile = {
         id: userId,
         email: 'user@example.com',
         name: 'Updated User',
@@ -243,7 +252,7 @@ describe('UserController', () => {
       const userId = 'user-123';
       const { req, res, next } = createMockExpressObjects(userId);
 
-      const mockUserProfile: UserDto = {
+      const mockUserProfile: UserProfile = {
         id: userId,
         email: 'user@example.com',
         name: 'Test User',
@@ -280,7 +289,7 @@ describe('UserController', () => {
       const { req, res, next } = createMockExpressObjects(userId);
       req.body = {}; // Empty update
 
-      const mockUpdatedProfile: UserDto = {
+      const mockUpdatedProfile: UserProfile = {
         id: userId,
         email: 'user@example.com',
         name: 'Test User',

@@ -1,14 +1,12 @@
 import { Response, NextFunction } from 'express';
-import { LocalizedRequest, LanguageMiddleware } from '@/middleware/LanguageMiddleware';
-import { RequestWithContext } from '@/middleware/RequestContextMiddleware';
-import { ErrorFactory } from '@/errors/ApplicationError';
+import { LanguageMiddleware } from '@/middleware/LanguageMiddleware';
+
+import { ErrorFactory } from '@/errors';
 import { ErrorCode } from '@/types/error-codes';
-import { SuccessResponse } from '@/dto/responses/SuccessResponse';
+import { SuccessResponse } from '@/types/responses/SuccessResponse';
 import { SuccessFormatter } from '@/formatters/SuccessFormatter';
 import { TranslationService } from '@/services/TranslationService';
-
-// Combined request type for convenience
-export type EnhancedRequest = LocalizedRequest & RequestWithContext;
+import { EnhancedRequest } from '@/interfaces/middleware/IEnhancedRequest';
 
 /**
  * Base Controller class that eliminates common repetition

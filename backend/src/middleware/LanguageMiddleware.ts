@@ -1,19 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { TranslationService } from '@/services/TranslationService';
+import { IRequestContext, ILocalizedRequest } from '@/interfaces/middleware';
 
-// Request context interface for tracking requests
-export interface RequestContext {
-  correlationId?: string;
-  requestId?: string;
-  userId?: string;
-  timestamp?: Date;
-}
-
-export interface LocalizedRequest extends Request {
-  language?: string;
-  t?: TranslationService;
-  context?: RequestContext;
-}
+// Re-export for backward compatibility
+export type RequestContext = IRequestContext;
+export type LocalizedRequest = ILocalizedRequest;
 
 export class LanguageMiddleware {
   private static translationService = TranslationService.getInstance();

@@ -41,59 +41,26 @@ export function createAuthRoutes(authController: AuthController): Router {
    *       content:
    *         application/json:
    *           schema:
-   *             type: object
-   *             required:
-   *               - email
-   *               - password
-   *               - name
-   *             properties:
-   *               email:
-   *                 type: string
-   *                 format: email
-   *                 example: "user@example.com"
-   *               password:
-   *                 type: string
-   *                 minLength: 8
-   *                 example: "Password123!"
-   *               name:
-   *                 type: string
-   *                 example: "John Doe"
+   *             $ref: '#/components/schemas/RegisterDto'
    *     responses:
    *       201:
    *         description: User registered successfully
    *         content:
    *           application/json:
    *             schema:
-   *               type: object
-   *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
-   *                   type: string
-   *                   example: "User registered successfully"
-   *                 data:
-   *                   type: object
-   *                   properties:
-   *                     accessToken:
-   *                       type: string
-   *                     refreshToken:
-   *                       type: string
-   *                     user:
-   *                       type: object
-   *                       properties:
-   *                         id:
-   *                           type: string
-   *                         email:
-   *                           type: string
-   *                         name:
-   *                           type: string
-   *                         role:
-   *                           type: string
+   *               $ref: '#/components/schemas/AuthResponse'
    *       400:
    *         description: Validation error
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       409:
    *         description: Email already exists
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   router.post('/register', ValidationMiddleware.validateDto(RegisterDto), authController.register.bind(authController));
 
@@ -108,45 +75,26 @@ export function createAuthRoutes(authController: AuthController): Router {
    *       content:
    *         application/json:
    *           schema:
-   *             type: object
-   *             required:
-   *               - email
-   *               - password
-   *             properties:
-   *               email:
-   *                 type: string
-   *                 format: email
-   *                 example: "user@example.com"
-   *               password:
-   *                 type: string
-   *                 example: "Password123!"
+   *             $ref: '#/components/schemas/LoginDto'
    *     responses:
    *       200:
    *         description: Login successful
    *         content:
    *           application/json:
    *             schema:
-   *               type: object
-   *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
-   *                   type: string
-   *                   example: "Login successful"
-   *                 data:
-   *                   type: object
-   *                   properties:
-   *                     accessToken:
-   *                       type: string
-   *                     refreshToken:
-   *                       type: string
-   *                     user:
-   *                       type: object
+   *               $ref: '#/components/schemas/AuthResponse'
    *       401:
    *         description: Invalid credentials
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       404:
    *         description: User not found
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   router.post('/login', ValidationMiddleware.validateDto(LoginDto), authController.login.bind(authController));
 
@@ -176,19 +124,14 @@ export function createAuthRoutes(authController: AuthController): Router {
    *             schema:
    *               type: object
    *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
+   *                 accessToken:
    *                   type: string
-   *                   example: "Token refreshed successfully"
-   *                 data:
-   *                   type: object
-   *                   properties:
-   *                     accessToken:
-   *                       type: string
    *       401:
    *         description: Invalid refresh token
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   router.post('/refresh', authController.refreshToken.bind(authController));
 
@@ -203,35 +146,26 @@ export function createAuthRoutes(authController: AuthController): Router {
    *       content:
    *         application/json:
    *           schema:
-   *             type: object
-   *             required:
-   *               - userId
-   *             properties:
-   *               userId:
-   *                 type: string
-   *                 example: "123e4567-e89b-12d3-a456-426614174000"
+   *             $ref: '#/components/schemas/LogoutDto'
    *     responses:
    *       200:
    *         description: Logout successful
    *         content:
    *           application/json:
    *             schema:
-   *               type: object
-   *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
-   *                   type: string
-   *                   example: "Logout successful"
-   *                 data:
-   *                   type: object
-   *                   nullable: true
-   *                   example: null
+   *               $ref: '#/components/schemas/SuccessResponse'
    *       401:
    *         description: Invalid user
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       404:
    *         description: User not found
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   router.post('/logout', ValidationMiddleware.validateDto(LogoutDto), authController.logout.bind(authController));
 

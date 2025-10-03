@@ -1,9 +1,10 @@
-import { 
+import {
   EmailAlreadyExistsError,
   InvalidCredentialsError,
   UserNotFoundError,
-  InvalidRefreshTokenError
-} from '@/errors/auth/AuthErrors';
+  InvalidRefreshTokenError,
+  ErrorSerializer
+} from '@/errors';
 import { ErrorCode } from '@/types/error-codes';
 
 describe('Auth Error Handling Improvements', () => {
@@ -56,7 +57,7 @@ describe('Auth Error Handling Improvements', () => {
     it('should serialize error to JSON properly', () => {
       const email = 'test@example.com';
       const error = new EmailAlreadyExistsError(email);
-      const json = error.toJSON();
+      const json = ErrorSerializer.toJSON(error);
 
       expect(json.code).toBe(ErrorCode.VALIDATION_EMAIL_ALREADY_EXISTS);
       expect(json.name).toBe('EmailAlreadyExistsError');
@@ -67,7 +68,7 @@ describe('Auth Error Handling Improvements', () => {
     it('should create user-safe JSON without sensitive details', () => {
       const email = 'test@example.com';
       const error = new EmailAlreadyExistsError(email);
-      const userSafeJson = error.toUserSafeJSON();
+      const userSafeJson = ErrorSerializer.toUserSafeJSON(error);
 
       expect(userSafeJson.code).toBe(ErrorCode.VALIDATION_EMAIL_ALREADY_EXISTS);
       expect(userSafeJson.message).toBeDefined();

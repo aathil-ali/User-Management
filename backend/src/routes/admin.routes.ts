@@ -58,63 +58,33 @@ export function createAdminRoutes(adminController: AdminController): Router {
    *             schema:
    *               type: object
    *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
-   *                   type: string
-   *                   example: "Users retrieved successfully"
-   *                 data:
+   *                 users:
+   *                   type: array
+   *                   items:
+   *                     $ref: '#/components/schemas/User'
+   *                 pagination:
    *                   type: object
    *                   properties:
-   *                     users:
-   *                       type: array
-   *                       items:
-   *                         type: object
-   *                         properties:
-   *                           id:
-   *                             type: string
-   *                             example: "123e4567-e89b-12d3-a456-426614174000"
-   *                           email:
-   *                             type: string
-   *                             example: "user@example.com"
-   *                           name:
-   *                             type: string
-   *                             example: "John Doe"
-   *                           role:
-   *                             type: string
-   *                             example: "user"
-   *                           isActive:
-   *                             type: boolean
-   *                             example: true
-   *                           avatar:
-   *                             type: string
-   *                             nullable: true
-   *                           createdAt:
-   *                             type: string
-   *                             format: date-time
-   *                           updatedAt:
-   *                             type: string
-   *                             format: date-time
-   *                     pagination:
-   *                       type: object
-   *                       properties:
-   *                         total:
-   *                           type: integer
-   *                           example: 150
-   *                         pages:
-   *                           type: integer
-   *                           example: 8
-   *                         page:
-   *                           type: integer
-   *                           example: 1
-   *                         limit:
-   *                           type: integer
-   *                           example: 20
+   *                     total:
+   *                       type: integer
+   *                     pages:
+   *                       type: integer
+   *                     page:
+   *                       type: integer
+   *                     limit:
+   *                       type: integer
    *       401:
    *         description: Unauthorized
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       403:
    *         description: Admin access required
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   router.get('/users', adminController.getAllUsers.bind(adminController));
 
@@ -141,62 +111,25 @@ export function createAdminRoutes(adminController: AdminController): Router {
    *         content:
    *           application/json:
    *             schema:
-   *               type: object
-   *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
-   *                   type: string
-   *                   example: "User retrieved successfully"
-   *                 data:
-   *                   type: object
-   *                   properties:
-   *                     id:
-   *                       type: string
-   *                       example: "123e4567-e89b-12d3-a456-426614174000"
-   *                     email:
-   *                       type: string
-   *                       example: "user@example.com"
-   *                     name:
-   *                       type: string
-   *                       example: "John Doe"
-   *                     role:
-   *                       type: string
-   *                       example: "user"
-   *                     isActive:
-   *                       type: boolean
-   *                       example: true
-   *                     avatar:
-   *                       type: string
-   *                       nullable: true
-   *                     preferences:
-   *                       type: object
-   *                       properties:
-   *                         theme:
-   *                           type: string
-   *                           example: "light"
-   *                         notifications:
-   *                           type: boolean
-   *                           example: true
-   *                         language:
-   *                           type: string
-   *                           example: "en"
-   *                         timezone:
-   *                           type: string
-   *                           example: "UTC"
-   *                     createdAt:
-   *                       type: string
-   *                       format: date-time
-   *                     updatedAt:
-   *                       type: string
-   *                       format: date-time
+   *               $ref: '#/components/schemas/User'
    *       401:
    *         description: Unauthorized
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       403:
    *         description: Admin access required
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       404:
    *         description: User not found
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   router.get('/users/:id', adminController.getUserById.bind(adminController));
 
@@ -222,81 +155,38 @@ export function createAdminRoutes(adminController: AdminController): Router {
    *       content:
    *         application/json:
    *           schema:
-   *             type: object
-   *             properties:
-   *               name:
-   *                 type: string
-   *                 example: "Jane Smith"
-   *               role:
-   *                 type: string
-   *                 enum: ["admin", "user"]
-   *                 example: "admin"
-   *               isActive:
-   *                 type: boolean
-   *                 example: false
-   *               avatar:
-   *                 type: string
-   *                 nullable: true
-   *                 example: "https://example.com/avatar.jpg"
-   *               preferences:
-   *                 type: object
-   *                 properties:
-   *                   theme:
-   *                     type: string
-   *                     enum: ["light", "dark", "auto"]
-   *                   notifications:
-   *                     type: boolean
-   *                   language:
-   *                     type: string
-   *                     enum: ["en", "es", "fr"]
-   *                   timezone:
-   *                     type: string
+   *             $ref: '#/components/schemas/UpdateProfileDto'
    *     responses:
    *       200:
    *         description: User updated successfully
    *         content:
    *           application/json:
    *             schema:
-   *               type: object
-   *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
-   *                   type: string
-   *                   example: "User updated successfully"
-   *                 data:
-   *                   type: object
-   *                   properties:
-   *                     id:
-   *                       type: string
-   *                     email:
-   *                       type: string
-   *                     name:
-   *                       type: string
-   *                     role:
-   *                       type: string
-   *                     isActive:
-   *                       type: boolean
-   *                     avatar:
-   *                       type: string
-   *                       nullable: true
-   *                     preferences:
-   *                       type: object
-   *                     createdAt:
-   *                       type: string
-   *                       format: date-time
-   *                     updatedAt:
-   *                       type: string
-   *                       format: date-time
+   *               $ref: '#/components/schemas/User'
    *       400:
    *         description: Validation error
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       401:
    *         description: Unauthorized
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       403:
    *         description: Admin access required
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       404:
    *         description: User not found
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   // router.put('/users/:id', adminController.updateUser.bind(adminController));
 
@@ -332,26 +222,31 @@ export function createAdminRoutes(adminController: AdminController): Router {
    *         content:
    *           application/json:
    *             schema:
-   *               type: object
-   *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
-   *                   type: string
-   *                   example: "User deleted successfully"
-   *                 data:
-   *                   type: object
-   *                   nullable: true
-   *                   example: null
+   *               $ref: '#/components/schemas/SuccessResponse'
    *       401:
    *         description: Unauthorized
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       403:
    *         description: Admin access required
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       404:
    *         description: User not found
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       409:
    *         description: Cannot delete - User has dependencies or is already inactive
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   // router.delete('/users/:id', adminController.deleteUser.bind(adminController));
 
@@ -370,54 +265,19 @@ export function createAdminRoutes(adminController: AdminController): Router {
    *         content:
    *           application/json:
    *             schema:
-   *               type: object
-   *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
-   *                 message:
-   *                   type: string
-   *                   example: "Statistics retrieved successfully"
-   *                 data:
-   *                   type: object
-   *                   properties:
-   *                     users:
-   *                       type: object
-   *                       properties:
-   *                         total:
-   *                           type: integer
-   *                           example: 1250
-   *                         active:
-   *                           type: integer
-   *                           example: 1180
-   *                         inactive:
-   *                           type: integer
-   *                           example: 70
-   *                         admins:
-   *                           type: integer
-   *                           example: 5
-   *                         newThisMonth:
-   *                           type: integer
-   *                           example: 45
-   *                     activity:
-   *                       type: object
-   *                       properties:
-   *                         loginsToday:
-   *                           type: integer
-   *                           example: 320
-   *                         loginsThisWeek:
-   *                           type: integer
-   *                           example: 1850
-   *                         registrationsToday:
-   *                           type: integer
-   *                           example: 8
-   *                         registrationsThisWeek:
-   *                           type: integer
-   *                           example: 32
+   *               $ref: '#/components/schemas/SuccessResponse'
    *       401:
    *         description: Unauthorized
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    *       403:
    *         description: Admin access required
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ErrorResponse'
    */
   // router.get('/stats', adminController.getStats.bind(adminController));
 

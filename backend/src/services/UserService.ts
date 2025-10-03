@@ -1,11 +1,11 @@
 import { IUserService } from '@/interfaces/IUserService';
 import { IUserAuthRepository } from '@/interfaces/IUserAuthRepository';
 import { IUserProfileRepository } from '@/interfaces/IUserProfileRepository';
-import { UserDto } from '@/dto/user/UserDto';
+import { UserProfile as UserProfileModel } from '@/models/UserProfile';
 import { UpdateProfileDto } from '@/dto/user/UpdateProfileDto';
-import { UserListDto } from '@/dto/user/UserListDto';
-import { UserProfile } from '@/entities/UserProfile';
-import { ErrorFactory } from '@/errors/ApplicationError';
+import { UserList } from '@/models/UserList';
+import { UserProfile as UserProfileEntity } from '@/entities/UserProfile';
+import { ErrorFactory } from '@/errors';
 import { ErrorCode } from '@/types/error-codes';
 
 export class UserService implements IUserService {
@@ -14,7 +14,7 @@ export class UserService implements IUserService {
     private userProfileRepository: IUserProfileRepository
   ) {}
 
-  async getProfile(userId: string): Promise<UserDto> {
+  async getProfile(userId: string): Promise<UserProfileModel> {
     try {
       // 1. Fetch user auth data from PostgreSQL
       const user = await this.userAuthRepository.findById(userId);
@@ -48,8 +48,8 @@ export class UserService implements IUserService {
         );
       }
 
-      // 4. Combine data into UserDto format
-      const userDto: UserDto = {
+      // 4. Combine data into UserProfileModel format
+      const userDto: UserProfileModel = {
         id: user.id,
         email: user.email,
         name: profile.profile.displayName,
@@ -85,7 +85,7 @@ export class UserService implements IUserService {
     }
   }
 
-  async updateProfile(userId: string, updateDto: UpdateProfileDto): Promise<UserDto> {
+  async updateProfile(userId: string, updateDto: UpdateProfileDto): Promise<UserProfileModel> {
     try {
       // 1. Verify user exists and is active
       const user = await this.userAuthRepository.findById(userId);
@@ -244,8 +244,8 @@ export class UserService implements IUserService {
       // 3. Soft delete profile in MongoDB (anonymize data but keep structure)
       const currentProfile = await this.userProfileRepository.findByUserId(userId);
       if (currentProfile) {
-        // Create proper UserProfile update structure
-        const profileUpdates: Partial<UserProfile> = {
+        // Create proper UserProfileEntity update structure
+        const profileUpdates: Partial<UserProfileEntity> = {
           profile: {
             ...currentProfile.profile,
             displayName: `[DELETED_USER_${userId.substring(0, 8)}]`,
@@ -304,7 +304,7 @@ export class UserService implements IUserService {
     }
   }
 
-  async getAllUsers(page: number, limit: number): Promise<UserListDto> {
+  async getAllUsers(page: number, limit: number): Promise<UserList> {
     try {
       // Validate pagination parameters
       const validatedPage = Math.max(1, parseInt(String(page)) || 1);
@@ -327,14 +327,14 @@ export class UserService implements IUserService {
       }
       
       // 2. Get user profiles from MongoDB for each user
-      const userDtos: UserDto[] = [];
+      const userDtos: UserProfileModel[] = [];
       
       for (const user of authUsers) {
         try {
           const profile = await this.userProfileRepository.findByUserId(user.id);
           
-          // Create UserDto (include all users, even those without profiles)
-          const userDto: UserDto = {
+          // Create UserProfileModel (include all users, even those without profiles)
+          const userDto: UserProfileModel = {
             id: user.id,
             email: user.email,
             name: profile?.profile.displayName || '[No Profile]',
@@ -357,8 +357,8 @@ export class UserService implements IUserService {
         } catch (profileError) {
           // If profile fetch fails, still include user with basic info
           console.warn(`Failed to fetch profile for user ${user.id}:`, profileError);
-          
-          const userDto: UserDto = {
+
+          const userDto: UserProfileModel = {
             id: user.id,
             email: user.email,
             name: '[Profile Error]',
@@ -400,7 +400,7 @@ export class UserService implements IUserService {
     }
   }
 
-  async getUserById(userId: string): Promise<UserDto> {
+  async getUserById(userId: string): Promise<UserProfileModel> {
     try {
       // Validate input
       if (!userId || typeof userId !== 'string') {
@@ -441,8 +441,8 @@ export class UserService implements IUserService {
         };
       }
       
-      // 3. Create comprehensive UserDto with admin metadata
-      const userDto: UserDto = {
+      // 3. Create comprehensive UserProfileModel with admin metadata
+      const userDto: UserProfileModel = {
         id: user.id,
         email: user.email,
         name: profile.profile.displayName,

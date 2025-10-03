@@ -1,4 +1,12 @@
-import { TranslationKeys } from '@/types/i18n.types';
+import { ITranslationKeys } from '@/interfaces/i18n/ITranslationKeys';
+import { IAuthTranslationKeys } from '@/interfaces/i18n/IAuthTranslationKeys';
+import { IServerTranslationKeys } from '@/interfaces/i18n/IServerTranslationKeys';
+import { IValidationTranslationKeys } from '@/interfaces/i18n/IValidationTranslationKeys';
+import { IErrorTranslationKeys } from '@/interfaces/i18n/IErrorTranslationKeys';
+import { IUserTranslationKeys } from '@/interfaces/i18n/IUserTranslationKeys';
+import { IAuthorizationTranslationKeys } from '@/interfaces/i18n/IAuthorizationTranslationKeys';
+import { IDatabaseTranslationKeys } from '@/interfaces/i18n/IDatabaseTranslationKeys';
+import { IAuditTranslationKeys } from '@/interfaces/i18n/IAuditTranslationKeys';
 import { ITranslationProvider, JsonTranslationProvider } from '@/interfaces/ITranslationProvider';
 
 /**
@@ -12,7 +20,7 @@ import { ITranslationProvider, JsonTranslationProvider } from '@/interfaces/ITra
 export class TranslationService {
   private static instance: TranslationService;
   private currentLanguage: string = 'en';
-  private translations: Record<string, TranslationKeys>;
+  private translations: Record<string, ITranslationKeys>;
   private translationProvider: ITranslationProvider;
   private supportedLanguages: string[];
 
@@ -107,56 +115,56 @@ export class TranslationService {
   /**
    * Get translation for authentication messages
    */
-  auth(key: keyof TranslationKeys['auth'], variables?: Record<string, string | number>): string {
+  auth(key: keyof IAuthTranslationKeys, variables?: Record<string, string | number>): string {
     return this.t(`auth.${key}`, variables);
   }
 
   /**
    * Get translation for user messages
    */
-  user(key: keyof TranslationKeys['user'], variables?: Record<string, string | number>): string {
+  user(key: keyof IUserTranslationKeys, variables?: Record<string, string | number>): string {
     return this.t(`user.${key}`, variables);
   }
 
   /**
    * Get translation for validation messages
    */
-  validation(key: keyof TranslationKeys['validation'], variables?: Record<string, string | number>): string {
+  validation(key: keyof IValidationTranslationKeys, variables?: Record<string, string | number>): string {
     return this.t(`validation.${key}`, variables);
   }
 
   /**
    * Get translation for authorization messages
    */
-  authorization(key: keyof TranslationKeys['authorization'], variables?: Record<string, string | number>): string {
+  authorization(key: keyof IAuthorizationTranslationKeys, variables?: Record<string, string | number>): string {
     return this.t(`authorization.${key}`, variables);
   }
 
   /**
    * Get translation for server messages
    */
-  server(key: keyof TranslationKeys['server'], variables?: Record<string, string | number>): string {
+  server(key: keyof IServerTranslationKeys, variables?: Record<string, string | number>): string {
     return this.t(`server.${key}`, variables);
   }
 
   /**
    * Get translation for database messages
    */
-  database(key: keyof TranslationKeys['database'], variables?: Record<string, string | number>): string {
+  database(key: keyof IDatabaseTranslationKeys, variables?: Record<string, string | number>): string {
     return this.t(`database.${key}`, variables);
   }
 
   /**
    * Get translation for audit messages
    */
-  audit(key: keyof TranslationKeys['audit'], variables?: Record<string, string | number>): string {
+  audit(key: keyof IAuditTranslationKeys, variables?: Record<string, string | number>): string {
     return this.t(`audit.${key}`, variables);
   }
 
   /**
    * Get translation for error messages
    */
-  errors(key: keyof TranslationKeys['errors'], variables?: Record<string, string | number>): string {
+  errors(key: keyof IErrorTranslationKeys, variables?: Record<string, string | number>): string {
     return this.t(`errors.${key}`, variables);
   }
 

@@ -4,7 +4,7 @@ import { IAuthService } from '../../../src/interfaces/IAuthService';
 import { RegisterDto } from '../../../src/dto/auth/RegisterDto';
 import { LoginDto } from '../../../src/dto/auth/LoginDto';
 import { LogoutDto } from '../../../src/dto/auth/LogoutDto';
-import { AuthResponseDto } from '../../../src/dto/auth/AuthResponseDto';
+import { AuthResponse } from '../../../src/models/AuthResponse';
 
 // Mock AuthService
 const mockAuthService: jest.Mocked<IAuthService> = {
@@ -56,7 +56,7 @@ describe('AuthController', () => {
         name: 'New User',
       };
 
-      const mockAuthResponse: AuthResponseDto = {
+      const mockAuthResponse: AuthResponse = {
         accessToken: 'mock-access-token',
         refreshToken: 'mock-refresh-token',
         user: {
@@ -122,7 +122,7 @@ describe('AuthController', () => {
         password: 'SecurePassword123!',
       };
 
-      const mockAuthResponse: AuthResponseDto = {
+      const mockAuthResponse: AuthResponse = {
         accessToken: 'mock-access-token',
         refreshToken: 'mock-refresh-token',
         user: {
